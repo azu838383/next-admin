@@ -28,7 +28,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+      <div onClick={() => setOpened((o) => !o)} className={`cursor-pointer ${classes.control}`}>
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon variant="light" size={30}>
@@ -48,7 +48,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
             />
           )}
         </Group>
-      </UnstyledButton>
+      </div>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   );

@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '@/components/Layout'
 import { Anchor, Button, Checkbox, Container, Group, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core'
-import classes from '../components/AuthenticationTitle.module.css'
+import classes from './Authentication.module.css'
 import Link from 'next/link'
 
 export default function Home() {

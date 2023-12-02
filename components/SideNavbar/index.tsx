@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollArea, rem } from '@mantine/core';
+import { Button, Menu, ScrollArea, Text, UnstyledButton, rem } from '@mantine/core';
 import {
   IconNotes,
   IconCalendarStats,
@@ -8,6 +8,15 @@ import {
   IconFileAnalytics,
   IconAdjustments,
   IconLock,
+  IconSettings,
+  IconMessageCircle,
+  IconPhoto,
+  IconSearch,
+  IconArrowsLeftRight,
+  IconTrash,
+  IconUser,
+  IconLogout,
+  IconQrcode,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
 import { LinksGroup } from '../NavbarLinkGroup';
@@ -50,26 +59,55 @@ const mockdata = [
   },
 ];
 
-export function SideNavbar() {
+export function SideNavbar({
+  opened,
+  delayed
+}:{
+  opened: boolean
+  delayed: boolean
+}) {
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <div className="w-[250px] h-screen bg-gray-900">
-        <nav className={classes.navbar}>
+    <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 ${opened?'w-[250px]':'w-[0] opacity-0'} ${delayed && 'hidden'}`}>
+        <nav className={`w-[250px] ${classes.navbar}`}>
             <div className={classes.header}>
                 <Link href={"#"} className='flex justify-center'>
                     <Logo style={{ width: rem(120) }} />
                 </Link>
             </div>
 
-            <ScrollArea className={`${classes.links}`}>
+            <ScrollArea className={`border-t border-white dark:border-opacity-30 ${classes.links}`}>
                 <div className={classes.linksInner}>
                     {links}
                 </div>
+                
             </ScrollArea>
 
             <div className={classes.footer}>
-                {/* <UserButton /> */}
+              <Menu shadow="md" width={200} position="right-end">
+                <Menu.Target>
+                  <UnstyledButton className="w-full">
+                    <LinksGroup icon={IconUser} label="Account"  />
+                  </UnstyledButton>
+                </Menu.Target>
+
+                <div className="pb-1">
+                  <Menu.Dropdown>
+                    <Menu.Label>Account</Menu.Label>
+                    <Menu.Item leftSection={<IconQrcode style={{ width: rem(14), height: rem(14) }} />}>
+                      2FA Code
+                    </Menu.Item>
+                    <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                      Settings
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Item leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}>
+                      Logout
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </div>
+              </Menu>
             </div>
         </nav>
     </div>
