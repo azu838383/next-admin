@@ -92,7 +92,7 @@ export function SideNavbar({
                   </UnstyledButton>
                 </Menu.Target>
 
-                <div className="pb-1">
+                <div className="pb-2">
                   <Menu.Dropdown>
                     <Menu.Label>Account</Menu.Label>
                     <Menu.Item leftSection={<IconQrcode style={{ width: rem(14), height: rem(14) }} />}>
