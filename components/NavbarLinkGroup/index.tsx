@@ -1,9 +1,11 @@
 import React from "react";
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
-import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
+import { Group, Box, Collapse, ThemeIcon, rem } from '@mantine/core';
+import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import Link from "next/link";
+import { useDispatch } from 'react-redux'
+import { HISTORY } from "@/store/actions/actionTypes";
 
 export interface LinksGroupProps {
   icon: React.FC<any>;
@@ -14,6 +16,7 @@ export interface LinksGroupProps {
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: LinksGroupProps) {
+  const dispatch = useDispatch()
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
@@ -22,7 +25,10 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
       href={link.link}
       key={link.label}
       onClick={()=>{
-        // dispath for breath here 
+        dispatch({
+          type: HISTORY.ADD_PAGE_TO_HISTORY,
+          payload: {label: link.label, route: link.link}
+        })
       }}
     >
       {link.label}
@@ -34,7 +40,15 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
       <div onClick={() => setOpened((o) => !o)} className={`cursor-pointer ${classes.control}`}>
         <Group justify="space-between" gap={0}>
           {link ? (
-            <Link href={String(link)}>
+            <Link
+            href={String(link)}
+            onClick={()=>{
+              dispatch({
+                type: HISTORY.ADD_PAGE_TO_HISTORY,
+                payload: {label: label, route: link}
+              })
+            }}
+            >
               <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <ThemeIcon variant="light" size={30}>
                   <Icon style={{ width: rem(18), height: rem(18) }} />

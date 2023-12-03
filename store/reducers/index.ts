@@ -4,10 +4,12 @@
 import { combineReducers } from 'redux';
 import general from './generalReducer';
 import user from './userReducer';
+import historyTab from './historyTab'
 
 const appReducer = combineReducers({
   general,
   user,
+  historyTab
 });
 
 export type RootState = ReturnType<typeof appReducer>;
@@ -20,5 +22,3 @@ const rootReducer = (state: RootState | undefined, action: any): RootState => {
 };
 
 export default rootReducer;
-
-// END OF NEW REDUCER 

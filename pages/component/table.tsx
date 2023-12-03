@@ -3,6 +3,8 @@ import Layout from '@/components/Layout'
 import { Button, Modal } from '@mantine/core'
 import TabelComp from '@/components/TableComp'
 import Text from '@/components/Text'
+import Head from 'next/head'
+import appConfig from '../../app.json'
 
 export default function Home() {
 
@@ -66,6 +68,9 @@ export default function Home() {
 
     return (
         <>
+            <Head>
+                <title>Table | {appConfig.name}</title>
+            </Head>
             <Layout>
                 <div className="flex flex-col">
                     

@@ -4,9 +4,15 @@ import { Anchor, Button, Checkbox, Container, Group, Paper, PasswordInput, Text,
 import classes from './Authentication.module.css'
 import Link from 'next/link'
 import Router from 'next/router'
+import appConfig from '../app.json'
+import Head from 'next/head'
 
 export default function Home() {
   return (
+    <>
+    <Head>
+      <title>Login | {appConfig.name}</title>
+    </Head>
     <Layout onlyWrapper>
       <div className="h-screen flex flex-col justify-center">
         <Container
@@ -40,5 +46,6 @@ export default function Home() {
         </Container>
       </div>
     </Layout>
+    </>
   )
 }
