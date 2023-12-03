@@ -35,10 +35,9 @@ const Layout = ({
                     <SideNavbar opened={hamburger} delayed={delayState} />
                     <div className="flex flex-col w-full">
                         <TopNavbar opened={hamburger} toggle={setHamburger} delayState={delayedToggle}/>
-                        
-                        <div className="w-full p-4 ">
-                            <div className="bg-slate-700 min-h-[100px] rounded-md">
-                            {children}
+                        <div className="w-full p-4">
+                            <div className="bg-gray-100 dark:bg-slate-800 drop-shadow rounded-md p-4">
+                                {children}
                             </div>
                         </div>
                     </div>

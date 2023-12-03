@@ -76,7 +76,7 @@ const TopNavbar = ({
 		{ title: 'Market news', href: '#' },
 		{ title: 'Overview', href: '#' },
 	  ].map((item, index) => (
-		<Anchor className='!text-white' href={item.href} key={index}>
+		<Anchor className='dark:!text-white' href={item.href} key={index}>
 		  {item.title}
 		</Anchor>
 	  ));
@@ -108,11 +108,11 @@ const TopNavbar = ({
 					{items.length > 0 ? items : <Spotlight.Empty>Nothing found...</Spotlight.Empty>}
 					</Spotlight.ActionsList>
 				</Spotlight.Root>
-				<div className="relative pr-3 text-white hover:text-sky-500 cursor-pointer transition-all">
+				<div className="relative pr-3 text-black dark:text-white hover:text-sky-700 cursor-pointer transition-all">
 					<IconBell />
 					<Badge size='sm' className='absolute -top-3 right-0'>2</Badge>
 				</div>
-				
+
 			</div>
         </div>
     )

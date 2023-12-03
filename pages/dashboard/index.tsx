@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Layout from '@/components/Layout'
+import { Button } from '@mantine/core'
+import TabelComp from '@/components/TableComp'
 
 export default function Home() {
+
   return (
     <Layout>
-      <div className="flex flex-col justify-center">
-        asd
-      </div>
+      
     </Layout>
   )
 }

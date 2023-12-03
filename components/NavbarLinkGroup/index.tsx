@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
 import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
+import Link from "next/link";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -15,15 +16,16 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
-      component="a"
+    <Link
       className={classes.link}
       href={link.link}
       key={link.label}
-      onClick={(event) => event.preventDefault()}
+      onClick={()=>{
+        
+      }}
     >
       {link.label}
-    </Text>
+    </Link>
   ));
 
   return (

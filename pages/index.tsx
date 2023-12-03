@@ -3,6 +3,7 @@ import Layout from '@/components/Layout'
 import { Anchor, Button, Checkbox, Container, Group, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core'
 import classes from './Authentication.module.css'
 import Link from 'next/link'
+import Router from 'next/router'
 
 export default function Home() {
   return (
@@ -21,13 +22,18 @@ export default function Home() {
             <PasswordInput label="Password" placeholder="Your password" required mt="md" />
             <Group justify="space-between" mt="lg">
               <Checkbox label="Remember me" />
-              <Link href={'/dashboard'}>
+              <Link href={'#'}>
                 <Anchor component="button" size="sm">
                   Forgot password?
                 </Anchor>
               </Link>
             </Group>
-            <Button fullWidth mt="xl">
+            <Button
+            onClick={()=>{
+              Router.push('/dashboard')
+            }}
+            fullWidth
+            mt="xl">
               Sign in
             </Button>
           </Paper>

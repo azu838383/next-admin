@@ -24,16 +24,13 @@ import { Logo } from '../Logo';
 import Link from 'next/link';
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconGauge },
+  { label: 'Dashboard', icon: IconGauge, link: '/' },
   {
-    label: 'Market news',
+    label: 'Component',
     icon: IconNotes,
-    initiallyOpened: false,
+    initiallyOpened: true,
     links: [
-      { label: 'Overview', link: '/' },
-      { label: 'Forecasts', link: '/' },
-      { label: 'Outlook', link: '/' },
-      { label: 'Real time', link: '/' },
+      { label: 'Table', link: '/component/table' },
     ],
   },
   {
@@ -45,8 +42,8 @@ const mockdata = [
       { label: 'Releases schedule', link: '/' },
     ],
   },
-  { label: 'Analytics', icon: IconPresentationAnalytics },
-  { label: 'Contracts', icon: IconFileAnalytics },
+  { label: 'Analytics', icon: IconPresentationAnalytics, link: '/' },
+  { label: 'Contracts', icon: IconFileAnalytics, link: '/' },
   { label: 'Settings', icon: IconAdjustments },
   {
     label: 'Security',
@@ -70,9 +67,9 @@ export function SideNavbar({
 
   return (
     <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 ${opened?'w-[250px]':'w-[0] opacity-0'} ${delayed && 'hidden'}`}>
-        <nav className={`w-[250px] ${classes.navbar}`}>
+        <nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
             <div className={classes.header}>
-                <Link href={"#"} className='flex justify-center'>
+                <Link href={"/"} className='flex justify-center'>
                     <Logo style={{ width: rem(120) }} />
                 </Link>
             </div>
