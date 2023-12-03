@@ -25,3 +25,17 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.m-87cf2631.mantine-Spotlight-action {
+  display: flex;
+  flex-direction: row;
+  padding: 15px !important;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+}
+
+.m-3d475731 {
+  display: flex;
+  flex-direction: column;
+}

@@ -5,14 +5,15 @@ import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import Link from "next/link";
 
-interface LinksGroupProps {
+export interface LinksGroupProps {
   icon: React.FC<any>;
   label: string;
   initiallyOpened?: boolean;
+  link?: string;
   links?: { label: string; link: string }[];
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
@@ -21,7 +22,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
       href={link.link}
       key={link.label}
       onClick={()=>{
-        
+        // dispath for breath here 
       }}
     >
       {link.label}
@@ -32,12 +33,23 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
     <>
       <div onClick={() => setOpened((o) => !o)} className={`cursor-pointer ${classes.control}`}>
         <Group justify="space-between" gap={0}>
-          <Box style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="light" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
-            </ThemeIcon>
-            <Box ml="md">{label}</Box>
-          </Box>
+          {link ? (
+            <Link href={String(link)}>
+              <Box style={{ display: 'flex', alignItems: 'center' }}>
+                <ThemeIcon variant="light" size={30}>
+                  <Icon style={{ width: rem(18), height: rem(18) }} />
+                </ThemeIcon>
+                <Box ml="md">{label}</Box>
+              </Box>
+            </Link>
+          ):(
+            <Box style={{ display: 'flex', alignItems: 'center' }}>
+              <ThemeIcon variant="light" size={30}>
+                <Icon style={{ width: rem(18), height: rem(18) }} />
+              </ThemeIcon>
+              <Box ml="md">{label}</Box>
+            </Box>
+          )}
           {hasLinks && (
             <IconChevronRight
               className={classes.chevron}
@@ -53,23 +65,5 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
       </div>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
-  );
-}
-
-const mockdata = {
-  label: 'Releases',
-  icon: IconCalendarStats,
-  links: [
-    { label: 'Upcoming releases', link: '/' },
-    { label: 'Previous releases', link: '/' },
-    { label: 'Releases schedule', link: '/' },
-  ],
-};
-
-export function NavbarLinksGroup() {
-  return (
-    <Box mih={220} p="md">
-      <LinksGroup {...mockdata} />
-    </Box>
   );
 }

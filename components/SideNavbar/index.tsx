@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Menu, ScrollArea, Text, UnstyledButton, rem } from '@mantine/core';
+import { Image, Menu, ScrollArea, UnstyledButton, rem } from '@mantine/core';
 import {
   IconNotes,
   IconCalendarStats,
@@ -9,51 +9,51 @@ import {
   IconAdjustments,
   IconLock,
   IconSettings,
-  IconMessageCircle,
-  IconPhoto,
-  IconSearch,
-  IconArrowsLeftRight,
-  IconTrash,
   IconUser,
   IconLogout,
   IconQrcode,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
 import { LinksGroup } from '../NavbarLinkGroup';
-import { Logo } from '../Logo';
 import Link from 'next/link';
 
-const mockdata = [
-  { label: 'Dashboard', icon: IconGauge, link: '/' },
+export const listMenu = [
+  { label: 'Dashboard', icon: IconGauge, link: '/dashboard', desc: 'This is menu dashboard' },
   {
     label: 'Component',
     icon: IconNotes,
     initiallyOpened: true,
+	new: true,
+	desc: 'All of component will be here',
     links: [
-      { label: 'Table', link: '/component/table' },
+      { label: 'Table', link: '/component/table', desc: 'Component of table can be use with <TableComp />' },
     ],
   },
-  {
-    label: 'Releases',
-    icon: IconCalendarStats,
-    links: [
-      { label: 'Upcoming releases', link: '/' },
-      { label: 'Previous releases', link: '/' },
-      { label: 'Releases schedule', link: '/' },
-    ],
-  },
-  { label: 'Analytics', icon: IconPresentationAnalytics, link: '/' },
-  { label: 'Contracts', icon: IconFileAnalytics, link: '/' },
-  { label: 'Settings', icon: IconAdjustments },
-  {
-    label: 'Security',
-    icon: IconLock,
-    links: [
-      { label: 'Enable 2FA', link: '/' },
-      { label: 'Change password', link: '/' },
-      { label: 'Recovery codes', link: '/' },
-    ],
-  },
+//   {
+//     label: 'Releases',
+//     icon: IconCalendarStats,
+// 	desc: 'This is menu dashboard',
+// 	new: false,
+//     links: [
+//       { label: 'Upcoming releases', link: '/', desc: 'This is menu dashboard' },
+//       { label: 'Previous releases', link: '/', desc: 'This is menu dashboard' },
+//       { label: 'Releases schedule', link: '/', desc: 'This is menu dashboard' },
+//     ],
+//   },
+//   { label: 'Analytics', icon: IconPresentationAnalytics, link: '/', desc: 'This is menu dashboard' },
+//   { label: 'Contracts', icon: IconFileAnalytics, link: '/', desc: 'This is menu dashboard' },
+//   { label: 'Settings', icon: IconAdjustments, desc: 'This is menu dashboard' },
+//   {
+//     label: 'Security',
+//     icon: IconLock,
+// 	desc: 'This is menu dashboard',
+// 	new: false,
+//     links: [
+//       { label: 'Enable 2FA', link: '/', desc: 'This is menu dashboard' },
+//       { label: 'Change password', link: '/', desc: 'This is menu dashboard' },
+//       { label: 'Recovery codes', link: '/', desc: 'This is menu dashboard' },
+//     ],
+//   },
 ];
 
 export function SideNavbar({
@@ -63,14 +63,21 @@ export function SideNavbar({
   opened: boolean
   delayed: boolean
 }) {
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
     <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 ${opened?'w-[250px]':'w-[0] opacity-0'} ${delayed && 'hidden'}`}>
         <nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
             <div className={classes.header}>
                 <Link href={"/"} className='flex justify-center'>
-                    <Logo style={{ width: rem(120) }} />
+                  <Image
+                    src={'/img/logo/sgg-logo-yellow.png'}
+                    alt="Logo Admin"
+                    h={50}
+                    w="auto"
+                    fit="contain"
+                    className="drop-shadow-lg saturate-200 dark:drop-shadow-none "
+                  />
                 </Link>
             </div>
 
@@ -78,7 +85,6 @@ export function SideNavbar({
                 <div className={classes.linksInner}>
                     {links}
                 </div>
-                
             </ScrollArea>
 
             <div className={classes.footer}>
