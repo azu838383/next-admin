@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <Layout>
-      
+      <>Dashboard</>
     </Layout>
   )
 }
