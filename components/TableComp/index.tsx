@@ -291,7 +291,7 @@ const Table = ({
             customTableClassName ?? ""
           )}`}
         >
-          <thead className="bg-gray-100 dark:bg-slate-700/30">
+          <thead className="bg-slate-700/30">
             {headerGroups.map((headerGroup: any) => (
               <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id} className="border-b-0">
                 {headerGroup.headers.map((column: any) => {
@@ -311,7 +311,7 @@ const Table = ({
                       {...column.render("Header") && !column.noSort && 
                       column.getHeaderProps(column.getSortByToggleProps())}
                     >
-                      <div className={`inline-flex flex-row text-gray-700 dark:text-white ${String(column?.labelClassName??'')}`}>
+                      <div className={`inline-flex flex-row text-white ${String(column?.labelClassName??'')}`}>
                         {column.render("Header")}
                         {/* Add a sort direction indicator */}
                         {!isActionColumn && (
@@ -350,7 +350,7 @@ const Table = ({
             {page.map((row: any) => {
               prepareRow(row);
               return (
-                <tr key={row.id} {...row.getRowProps()} className="border-none even:bg-gray-100 dark:even:bg-slate-700/30 hover:bg-gray-100/90 hover:dark:bg-slate-700/50">
+                <tr key={row.id} {...row.getRowProps()} className="border-none even:bg-slate-700/30 hover:bg-slate-700/50">
                   {row.cells.map((cell: any) => {
                     return (
                       <td

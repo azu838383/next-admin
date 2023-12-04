@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import Layout from '@/components/Layout'
 import { Button, Modal, NumberFormatter } from '@mantine/core'
-import TabelComp from '@/components/TableComp'
+import TabelComp from '@/components/tableComp'
 import Text from '@/components/TextComp'
 import Head from 'next/head'
 import appConfig from '../../app.json'
@@ -154,7 +154,6 @@ export default function Home() {
             </Head>
             <Layout>
                 <div className="flex flex-col">
-                    
                     <TabelComp
                         columns={columns}
                         data={dataDummy.sort((a, b)=> a.position - b.position)}

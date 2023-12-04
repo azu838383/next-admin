@@ -3,7 +3,7 @@ import { IconBell, IconDashboard, IconFileText, IconHome, IconSearch, IconThermo
 import Link from 'next/link'
 import React, { ReactElement, useMemo, useState } from 'react'
 import { Spotlight, SpotlightActionData, SpotlightActionGroupData, spotlight } from '@mantine/spotlight';
-import { listMenu } from './SideNavbar';
+import { listMenu } from './sideNavbar';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { GENERAL } from '@/store/actions/actionTypes';
@@ -49,43 +49,45 @@ const TopNavbar = ({
 
 	return (
 		<>
-			<div className="relative select-none shadow-inner w-full h-[80px] bg-gray-300 dark:bg-slate-900 max-h-[60px] flex justify-between items-center px-4">
-				<div className="flex">
-					<Burger
-					opened={hamburger}
-					onClick={()=>{
-						delayState()
-						dispatch({
-							type: GENERAL.SET_SIDEBAR_STATE,
-							payload: !hamburger
-						})
-					}}
-					aria-label="Toggle navigation"
-					/>
-				</div>
-				<Link href={"#"} className={`absolute left-0 right-0 w-fit mx-auto transition-all ${opened ? 'opacity-0' : 'opacity-100'}`}>
-					<Image
-						src={'/img/logo/sgg-logo-yellow.png'}
-						alt="Logo Admin"
-						h={50}
-						w="auto"
-						fit="contain"
-						className="drop-shadow-lg saturate-200 dark:drop-shadow-none "
-					/>
-				</Link>
-				<div className="flex gap-4 items-center">
-					<div onClick={spotlight.open} className="flex justify-between items-center border border-white border-opacity-30 bg-zinc-800 rounded-lg w-[200px] px-2 py-1 cursor-pointer">
-						<IconSearch />
-						<div className="nowrap whitespace-nowrap -ml-10 mb-1">
-							<Kbd>⌘</Kbd> + <Kbd>K</Kbd>
+			<div className="relative select-none shadow-inner">
+				<div className={`fixed z-10 right-0 flex justify-between items-center px-4 h-[60px] max-h-[60px] bg-slate-900 ${opened ? 'w-[calc(100%-250px)]' : 'w-full'}`}>
+					<div className="flex">
+						<Burger
+						opened={hamburger}
+						onClick={()=>{
+							delayState()
+							dispatch({
+								type: GENERAL.SET_SIDEBAR_STATE,
+								payload: !hamburger
+							})
+						}}
+						aria-label="Toggle navigation"
+						/>
+					</div>
+					<Link href={"#"} className={`absolute left-0 right-0 w-fit mx-auto transition-all ${opened ? 'opacity-0' : 'opacity-100'}`}>
+						<Image
+							src={'/img/logo/sgg-logo-yellow.png'}
+							alt="Logo Admin"
+							h={50}
+							w="auto"
+							fit="contain"
+							className="saturate-200 drop-shadow-none "
+						/>
+					</Link>
+					<div className="flex gap-4 items-center">
+						<div onClick={spotlight.open} className="flex justify-between items-center border border-white border-opacity-30 bg-zinc-800 rounded-lg w-[200px] px-2 py-1 cursor-pointer">
+							<IconSearch />
+							<div className="nowrap whitespace-nowrap -ml-10 mb-1">
+								<Kbd>⌘</Kbd> + <Kbd>K</Kbd>
+							</div>
 						</div>
-					</div>
-					
-					<div onClick={notificationOpen} className="relative pr-3 text-black dark:text-white hover:text-sky-700 cursor-pointer transition-all">
-						<IconBell />
-						<Badge size='sm' className='absolute -top-3 right-0'>2</Badge>
-					</div>
+						
+						<div onClick={notificationOpen} className="relative pr-3 text-white hover:text-sky-700 cursor-pointer transition-all">
+							<IconBell />
+							<Badge size='sm' className='absolute -top-3 right-0'>2</Badge>
+						</div>
 
+					</div>
 				</div>
 			</div>
 			<Spotlight

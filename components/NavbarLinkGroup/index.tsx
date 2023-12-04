@@ -1,6 +1,6 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, rem } from '@mantine/core';
+import { Group, Box, Collapse, ThemeIcon, rem, Image, Avatar } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import Link from "next/link";
@@ -9,13 +9,14 @@ import { HISTORY } from "@/store/actions/actionTypes";
 
 export interface LinksGroupProps {
   icon: React.FC<any>;
+  image?: string;
   label: string;
   initiallyOpened?: boolean;
   link?: string;
   links?: { label: string; link: string }[];
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, links }: LinksGroupProps) {
   const dispatch = useDispatch()
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -58,9 +59,13 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
             </Link>
           ):(
             <Box style={{ display: 'flex', alignItems: 'center' }}>
-              <ThemeIcon variant="light" size={30}>
-                <Icon style={{ width: rem(18), height: rem(18) }} />
-              </ThemeIcon>
+              {image ? (
+                <Avatar src={image} alt="avatar" />
+                ):(
+                <ThemeIcon variant="light" size={30}>
+                    <Icon style={{ width: rem(18), height: rem(18) }} />
+                </ThemeIcon>
+              )}
               <Box ml="md">{label}</Box>
             </Box>
           )}

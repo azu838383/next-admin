@@ -14,9 +14,10 @@ import {
   IconLock,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
-import { LinksGroup } from '../NavbarLinkGroup';
+import { LinksGroup } from '../navbarLinkGroup';
 import Link from 'next/link';
 import Router from "next/router";
+import { useModal } from "../context/ModalsContextProvider";
 
 export const listMenu = [
   { label: 'Dashboard', icon: IconGauge, link: '/dashboard', desc: 'This is menu dashboard' },
@@ -27,7 +28,8 @@ export const listMenu = [
 	new: true,
 	desc: 'All of component will be here',
     links: [
-      { label: 'Table', link: '/component/table', desc: 'Component of table can be use with <TableComp />' },
+      { label: 'Table', link: '/component/table', desc: 'Component Table can be use with <TableComp ...props />' },
+      { label: 'QRCode', link: '/component/qrcode', desc: 'Component QRCode can be use with <QRCode ...props />' },
     ],
   },
   // {
@@ -64,10 +66,11 @@ export function SideNavbar({
   opened: boolean
   delayed: boolean
 }) {
+  const { showModal } = useModal()
   const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 w-[0] ${opened?'w-[250px]':'opacity-0'} ${delayed ? 'hidden' : ''}`}>
+    <div className={`h-screen fixed z-10 bg-slate-900 text-white transition duration-300 w-[0] ${opened?'w-[250px]':'opacity-0'} ${delayed ? 'hidden' : ''}`}>
         <nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
             <div className={classes.header}>
                 <Link href={"/"} className='flex justify-center'>
@@ -77,12 +80,12 @@ export function SideNavbar({
                     h={50}
                     w="auto"
                     fit="contain"
-                    className="drop-shadow-lg saturate-200 dark:drop-shadow-none "
+                    className="saturate-200 drop-shadow-none "
                   />
                 </Link>
             </div>
 
-            <ScrollArea className={`border-t border-white dark:border-opacity-30 ${classes.links}`}>
+            <ScrollArea className={`border-t border-white border-opacity-30 ${classes.links}`}>
                 <div className={classes.linksInner}>
                     {links}
                 </div>
@@ -92,18 +95,15 @@ export function SideNavbar({
               <Menu shadow="md" width={200} position="right-end">
                 <Menu.Target>
                   <UnstyledButton className="w-full">
-                    <LinksGroup icon={IconUser} label="Account"  />
+                    <LinksGroup icon={IconUser} image="/img/user.png" label="Account"  />
                   </UnstyledButton>
                 </Menu.Target>
 
                 <div className="pb-2">
                   <Menu.Dropdown>
                     <Menu.Label>Account</Menu.Label>
-                    <Menu.Item leftSection={<IconQrcode style={{ width: rem(14), height: rem(14) }} />}>
+                    <Menu.Item leftSection={<IconQrcode style={{ width: rem(14), height: rem(14) }} />} onClick={()=>{showModal('showQR')}}>
                       2FA Code
-                    </Menu.Item>
-                    <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
-                      Settings
                     </Menu.Item>
                     <Menu.Divider />
                     <Menu.Item leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />} onClick={()=>{Router.push('/')}}>
