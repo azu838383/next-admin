@@ -84,7 +84,7 @@ const TopNavbar = ({
 						
 						<div onClick={notificationOpen} className="relative pr-3 text-white hover:text-sky-700 cursor-pointer transition-all">
 							<IconBell />
-							<Badge size='sm' className='absolute -top-3 right-0'>2</Badge>
+							<Badge size='sm' className='absolute -top-3 right-0'>0</Badge>
 						</div>
 
 					</div>
