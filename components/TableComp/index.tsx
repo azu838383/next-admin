@@ -252,7 +252,7 @@ const Table = ({
               onClick={onDownload}
               disabled={data.length === 0}
             >
-              <RiFileExcel2Fill className="ml-2"/>Download
+              <RiFileExcel2Fill className="mr-2"/>Download
             </Button>
           ) : null
         }

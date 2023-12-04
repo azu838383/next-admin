@@ -8,7 +8,7 @@ interface PropCard {
   className?: string
 }
 
-const Text: React.FC<PropCard> = ({
+const TextComp: React.FC<PropCard> = ({
     children,
     variant,
     className
@@ -66,4 +66,4 @@ const Text: React.FC<PropCard> = ({
   return textToRender()
 }
 
-export default Text
+export default TextComp

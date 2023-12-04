@@ -1,5 +1,5 @@
-import { Anchor, Badge, Breadcrumbs, Burger, Image, Input, rem } from '@mantine/core'
-import { IconBell, IconDashboard, IconFileText, IconHome, IconSearch } from '@tabler/icons-react'
+import { Anchor, Badge, Breadcrumbs, Burger, Image, Input, Kbd, rem, useMantineColorScheme } from '@mantine/core'
+import { IconBell, IconDashboard, IconFileText, IconHome, IconSearch, IconThermometer } from '@tabler/icons-react'
 import Link from 'next/link'
 import React, { ReactElement, useMemo, useState } from 'react'
 import { Spotlight, SpotlightActionData, SpotlightActionGroupData, spotlight } from '@mantine/spotlight';
@@ -20,7 +20,6 @@ const TopNavbar = ({
 }): JSX.Element => {
 	const dispatch = useDispatch()
     const { hamburger } = useSelector((state: RootState) => state.general)
-	
 	const dataSpotlight = useMemo((): SpotlightActionData[] => {
 		const data = listMenu.filter((f) => !f.links).map((menuItem) => ({
 		  id: menuItem.label,
@@ -75,17 +74,12 @@ const TopNavbar = ({
 					/>
 				</Link>
 				<div className="flex gap-4 items-center">
-					<Input
-						readOnly={true}
-						onClick={spotlight.open}
-						rightSectionPointerEvents="all"
-						radius={'md'}
-						className='w-[200px]'
-						leftSection={<IconSearch />}
-						rightSection={
-							<div className="nowrap whitespace-nowrap -ml-10">Ctrl + K</div>
-						}
-					/>
+					<div onClick={spotlight.open} className="flex justify-between items-center border border-white border-opacity-30 bg-zinc-800 rounded-lg w-[200px] px-2 py-1 cursor-pointer">
+						<IconSearch />
+						<div className="nowrap whitespace-nowrap -ml-10 mb-1">
+							<Kbd>⌘</Kbd> + <Kbd>K</Kbd>
+						</div>
+					</div>
 					
 					<div onClick={notificationOpen} className="relative pr-3 text-black dark:text-white hover:text-sky-700 cursor-pointer transition-all">
 						<IconBell />
@@ -93,7 +87,6 @@ const TopNavbar = ({
 					</div>
 
 				</div>
-				
 			</div>
 			<Spotlight
 				actions={dataSpotlight}

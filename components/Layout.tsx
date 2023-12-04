@@ -1,14 +1,13 @@
 import { Inter } from 'next/font/google'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { SideNavbar } from './SideNavbar'
 import TopNavbar from './TopNavbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
-import Link from 'next/link'
 import Router from 'next/router'
 import { GENERAL, HISTORY } from '@/store/actions/actionTypes'
 import { MdClose } from 'react-icons/md'
-import { Drawer, ScrollArea, Tabs, Text } from '@mantine/core'
+import { Drawer, ScrollArea, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconBell } from '@tabler/icons-react'
 
@@ -16,10 +15,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 const Layout = ({
     children,
-    onlyWrapper
 }: {
     children: React.ReactNode
-    onlyWrapper?: boolean
 }): JSX.Element => {
 
     const { lists } = useSelector((state: RootState) => state.historyTab)
