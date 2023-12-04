@@ -6,7 +6,7 @@ import QRDownload from '@/components/QRdownload'
 import { Button, Code, Divider, Switch, Text, TextInput } from '@mantine/core'
 import TitlePage from '@/components/TitlePage'
 
-export default function Home() {
+export default function QrCodePage() {
     const [checked, setChecked] = useState(false);
     const [value, setValue] = useState<string>('')
     const [label, setLabel] = useState<string>('')

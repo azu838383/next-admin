@@ -9,7 +9,7 @@ import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import TitlePage from '@/components/TitlePage'
 
-export default function Home() {
+export default function TablePage() {
 
     const [state, setState] = useState<string | undefined>(undefined)
     const [modalVisible, setModalVisible] = useState(false)

@@ -30,6 +30,7 @@ export const listMenu = [
     links: [
       { label: 'Table', link: '/component/table', desc: 'Component Table can be use with <TableComp ...props />' },
       { label: 'QRCode', link: '/component/qrcode', desc: 'Component QRCode can be use with <QRCode ...props />' },
+      { label: 'Chart Statistic', link: '/component/chartjs', desc: 'Component Chart Statistic can be use with <ChartComp ...props />' },
     ],
   },
   // {
