@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import Link from 'next/link'
 import Router from 'next/router'
-import { HISTORY } from '@/store/actions/actionTypes'
+import { GENERAL, HISTORY } from '@/store/actions/actionTypes'
 import { MdClose } from 'react-icons/md'
-import { Tabs, Text } from '@mantine/core'
+import { Drawer, ScrollArea, Tabs, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { IconBell } from '@tabler/icons-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,18 +23,24 @@ const Layout = ({
 }): JSX.Element => {
 
     const { lists } = useSelector((state: RootState) => state.historyTab)
+    const { hamburger } = useSelector((state: RootState) => state.general)
+    const { hamburgDelay } = useSelector((state: RootState) => state.general)
+    const [opened, { open, close }] = useDisclosure(false)
     const dispatch = useDispatch()
-    const [hamburger, setHamburger] = useState(true)
-    const [delayState, setDelayState] = useState(false)
-    const [activeTab, setActiveTab] = useState<string | null>('dashboard')
 
 	const delayedToggle = () => {
-        if(!delayState){
+        if(!hamburgDelay){
             setTimeout(() => {
-                setDelayState(!delayState);
+                dispatch({
+                    type: GENERAL.SET_SIDEBAR_DSTATE,
+                    payload: true
+                })
             }, 300)
         } else {
-            setDelayState(!delayState);
+            dispatch({
+                type: GENERAL.SET_SIDEBAR_DSTATE,
+                payload: false
+            })
         }
 	};
 
@@ -59,69 +67,80 @@ const Layout = ({
 
     return (
         <main className={`relative min-h-screen ${inter.className}`}>
-            {onlyWrapper ? (
-                children
-            ):(
-                <div className="flex">
-                    <SideNavbar opened={hamburger} delayed={delayState} />
-                    <div className="flex flex-col w-full">
-                        <TopNavbar opened={hamburger} toggle={setHamburger} delayState={delayedToggle}/>
-                        <div className="w-full p-4">
-                            <div className="flex">
-                                {lists.map((e, index)=>(
+            <div className="flex">
+                <SideNavbar opened={hamburger} delayed={hamburgDelay} />
+                <div className="flex flex-col w-full">
+                    <TopNavbar opened={hamburger} delayState={delayedToggle} notificationOpen={open}/>
+                    <div className="w-full p-4">
+                        <div className="flex">
+                            {lists.map((e, index)=>(
+                                <div
+                                key={index}
+                                className={`relative flex flex-row truncate items-center gap-2 transition-all rounded-t-lg hover:bg-gray-200 dark:hover:bg-slate-800/60
+                                pr-8 ${lists.length >= 9? '!flex-grow':''}
+                                ${index===0?'!pr-4':''}
+                                ${Router.pathname === e.route?'bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:!bg-slate-800 !cursor-default ':''}`}>
                                     <div
-                                    key={index}
-                                    className={`relative flex flex-row truncate items-center gap-2 transition-all rounded-t-lg hover:bg-gray-200 dark:hover:bg-slate-800/60
-                                    pr-8 ${lists.length >= 9? '!flex-grow':''}
-                                    ${index===0?'!pr-4':''}
-                                    ${Router.pathname === e.route?'bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:!bg-slate-800 !cursor-default ':''}`}>
-                                        <div
-                                        onClick={()=>{Router.push(e.route)}} 
-                                        className={`py-2 pl-4 whitespace-nowrap truncate cursor-pointer `}>
-                                            <Text size="md">{e.label==='Dashboard'?'Dashboard':e.label}</Text>
-                                        </div>
-                                        {index!==0&&(
-                                        <MdClose
-                                        size={16}
-                                        className='absolute right-2 cursor-pointer'
-                                        onClick={()=>{
-                                            dispatch({
-                                            type:HISTORY.REMOVE_PAGE_FROM_HISTORY,
-                                            payload:e
-                                            })
-                                            if(Router.pathname===e.route)
-                                            {
-                                                Router.push(lists[lists.indexOf(e)-1].route)
-                                            } 
-                                        }}
-                                        />
-                                        )}
+                                    onClick={()=>{Router.push(e.route)}} 
+                                    className={`py-2 pl-4 whitespace-nowrap truncate cursor-pointer `}>
+                                        <Text size="md">{e.label==='Dashboard'?'Dashboard':e.label}</Text>
                                     </div>
-                                    ))}
-                                    {
-                                    lists.length > 8 &&
-                                    <div
+                                    {index!==0&&(
+                                    <MdClose
+                                    size={16}
+                                    className='absolute right-2 cursor-pointer'
                                     onClick={()=>{
                                         dispatch({
-                                        type:HISTORY.REMOVE_ALL_FROM_HISTORY
+                                        type:HISTORY.REMOVE_PAGE_FROM_HISTORY,
+                                        payload:e
                                         })
-                                        Router.push('/dashboard')
+                                        if(Router.pathname===e.route)
+                                        {
+                                            Router.push(lists[lists.indexOf(e)-1].route)
+                                        } 
                                     }}
-                                    className='relative w-[60px] justify-center flex flex-row truncate shadow-none drop-shadow-md bg-white items-center gap-2 border-[1px] mx-1 border-black border-opacity-20 rounded-lg'>
-                                        <MdClose
-                                        size={16}
-                                        className='cursor-pointer'
-                                        />
-                                    </div>
-                                }
-                            </div>
-                            <div className={`bg-gray-100 dark:bg-slate-800  p-4 ${Router.pathname === '/dashboard' ? 'rounded-b-md rounded-tr-md' : 'rounded-md'}`}>
-                                {children}
-                            </div>
+                                    />
+                                    )}
+                                </div>
+                                ))}
+                                {
+                                lists.length > 8 &&
+                                <div
+                                onClick={()=>{
+                                    dispatch({
+                                    type:HISTORY.REMOVE_ALL_FROM_HISTORY
+                                    })
+                                    Router.push('/dashboard')
+                                }}
+                                className='relative w-[60px] justify-center flex flex-row truncate shadow-none drop-shadow-md bg-white items-center gap-2 border-[1px] mx-1 border-black border-opacity-20 rounded-lg'>
+                                    <MdClose
+                                    size={16}
+                                    className='cursor-pointer'
+                                    />
+                                </div>
+                            }
+                        </div>
+                        <div className={`bg-gray-100 dark:bg-slate-800  p-4 ${Router.pathname === '/dashboard' ? 'rounded-b-md rounded-tr-md' : 'rounded-md'}`}>
+                            {children}
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+            <Drawer
+                opened={opened}
+                onClose={close}
+                position='right'
+                title={
+                    <div className='flex'>
+                        <IconBell className='mr-2'/>
+                        <Text>Notification</Text>
+                    </div>
+                }
+                scrollAreaComponent={ScrollArea.Autosize}
+            >
+                <Text>Put your notification here</Text>
+                <Text>You can make it with your style</Text>
+            </Drawer>
         </main>
     )
 }

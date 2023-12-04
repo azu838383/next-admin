@@ -66,7 +66,7 @@ export function SideNavbar({
   const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 ${opened?'w-[250px]':'w-[0] opacity-0'} ${delayed && 'hidden'}`}>
+    <div className={`h-screen bg-gray-300 dark:bg-slate-900 text-black dark:text-white transition duration-300 w-[0] ${opened?'w-[250px]':'opacity-0'} ${delayed ? 'hidden' : ''}`}>
         <nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
             <div className={classes.header}>
                 <Link href={"/"} className='flex justify-center'>

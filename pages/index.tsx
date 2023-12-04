@@ -13,7 +13,7 @@ export default function Home() {
     <Head>
       <title>Login | {appConfig.name}</title>
     </Head>
-    <Layout onlyWrapper>
+    <main className='relative min-h-screen'>
       <div className="h-screen flex flex-col justify-center">
         <Container
         className='w-full'
@@ -45,7 +45,7 @@ export default function Home() {
           </Paper>
         </Container>
       </div>
-    </Layout>
+    </main>
     </>
   )
 }

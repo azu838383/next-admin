@@ -5,16 +5,21 @@ import React, { ReactElement, useMemo, useState } from 'react'
 import { Spotlight, SpotlightActionData, SpotlightActionGroupData, spotlight } from '@mantine/spotlight';
 import { listMenu } from './SideNavbar';
 import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { GENERAL } from '@/store/actions/actionTypes';
+import { RootState } from '@/store/reducers';
 
 const TopNavbar = ({
   opened,
-  toggle,
-  delayState
+  delayState,
+  notificationOpen
 }:{
   opened: boolean
-  toggle: (opened:boolean) => void
   delayState: ()=> void
+  notificationOpen: ()=> void
 }): JSX.Element => {
+	const dispatch = useDispatch()
+    const { hamburger } = useSelector((state: RootState) => state.general)
 	
 	const dataSpotlight = useMemo((): SpotlightActionData[] => {
 		const data = listMenu.filter((f) => !f.links).map((menuItem) => ({
@@ -41,23 +46,23 @@ const TopNavbar = ({
 			}
 		});
 		return [...data, ...subData];
-	  }, []);
-
-	const dataBreadcrumbs = [
-		{ title: 'Market news', href: '#' },
-		{ title: 'Overview', href: '#' },
-	  ].map((item, index) => (
-		<Anchor className='dark:!text-white' href={item.href} key={index}>
-		  {item.title}
-		</Anchor>
-	  ));
+	}, []);
 
 	return (
 		<>
 			<div className="relative select-none shadow-inner w-full h-[80px] bg-gray-300 dark:bg-slate-900 max-h-[60px] flex justify-between items-center px-4">
 				<div className="flex">
-					<Burger opened={opened} onClick={()=>{toggle(!opened); delayState()}} aria-label="Toggle navigation" />
-					<Breadcrumbs className='ml-4'>{dataBreadcrumbs}</Breadcrumbs>
+					<Burger
+					opened={hamburger}
+					onClick={()=>{
+						delayState()
+						dispatch({
+							type: GENERAL.SET_SIDEBAR_STATE,
+							payload: !hamburger
+						})
+					}}
+					aria-label="Toggle navigation"
+					/>
 				</div>
 				<Link href={"#"} className={`absolute left-0 right-0 w-fit mx-auto transition-all ${opened ? 'opacity-0' : 'opacity-100'}`}>
 					<Image
@@ -82,7 +87,7 @@ const TopNavbar = ({
 						}
 					/>
 					
-					<div className="relative pr-3 text-black dark:text-white hover:text-sky-700 cursor-pointer transition-all">
+					<div onClick={notificationOpen} className="relative pr-3 text-black dark:text-white hover:text-sky-700 cursor-pointer transition-all">
 						<IconBell />
 						<Badge size='sm' className='absolute -top-3 right-0'>2</Badge>
 					</div>
