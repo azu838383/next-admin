@@ -106,10 +106,10 @@ export default function Home() {
                         <Code block>
                             {`
     <QRDownload
-        value={${qrValue}}
+        value={"${qrValue}"}
         size={120}
-        variant={${checked ? 'download' : 'default'}}
-        labelSave={${labelSave??'Save'}}
+        variant={"${checked ? 'download' : 'default'}"}
+        labelSave={"${labelSave??'Save'}"}
     />
                             `}
                         </Code>
