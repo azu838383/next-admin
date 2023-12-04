@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '@/components/Layout'
 import Head from 'next/head'
 import appConfig from '../../app.json'
+import TitlePage from '@/components/TitlePage'
 
 export default function Home() {
 
@@ -11,7 +12,8 @@ export default function Home() {
       <title>Dashboard | {appConfig.name}</title>
     </Head>
     <Layout>
-      <>Dashboard</>
+      <TitlePage label='Dashboard' />
+      Dashboard
     </Layout>
     </>
   )

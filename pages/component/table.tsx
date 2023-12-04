@@ -7,6 +7,7 @@ import Head from 'next/head'
 import appConfig from '../../app.json'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
+import TitlePage from '@/components/TitlePage'
 
 export default function Home() {
 
@@ -153,6 +154,7 @@ export default function Home() {
                 <title>Table | {appConfig.name}</title>
             </Head>
             <Layout>
+                <TitlePage label='Table Component' />
                 <div className="flex flex-col">
                     <TabelComp
                         columns={columns}
