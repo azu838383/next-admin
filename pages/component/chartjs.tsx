@@ -155,6 +155,7 @@ export default function ChartPage() {
                 data: valuesArray as number[],
             }
         ]
+    }
 
     <ChartComponent
         data={useChartData}

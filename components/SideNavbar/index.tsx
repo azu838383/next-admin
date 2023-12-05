@@ -96,7 +96,7 @@ export function SideNavbar({
               <Menu shadow="md" width={200} position="right-end">
                 <Menu.Target>
                   <UnstyledButton className="w-full">
-                    <LinksGroup icon={IconUser} image="/img/user.png" label="Account"  />
+                    <LinksGroup icon={IconUser} image="/img/user.webp" label="Account"  />
                   </UnstyledButton>
                 </Menu.Target>
 
