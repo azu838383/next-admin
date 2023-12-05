@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import Layout from '@/components/Layout'
-import { Button, Modal, NumberFormatter } from '@mantine/core'
+import { Button, Code, Modal, NumberFormatter, Switch, TextInput } from '@mantine/core'
 import TabelComp from '@/components/tableComp'
 import Text from '@/components/TextComp'
 import Head from 'next/head'
@@ -10,6 +10,12 @@ import { saveAs } from 'file-saver'
 import TitlePage from '@/components/TitlePage'
 
 export default function TablePage() {
+
+    const [checkedDownload, setCheckedDownload] = useState(false)
+    const [checkedSearch, setCheckedSearch] = useState(false)
+    const [checkedPagination, setCheckedPagination] = useState(false)
+    const [checkedCentered, setCheckedCentered] = useState(false)
+    const [buttonLabel, setButtonLabel] = useState<string|undefined>(undefined)
 
     const [state, setState] = useState<string | undefined>(undefined)
     const [modalVisible, setModalVisible] = useState(false)
@@ -155,19 +161,101 @@ export default function TablePage() {
             </Head>
             <Layout>
                 <TitlePage label='Table Component' />
-                <div className="flex flex-col">
-                    <TabelComp
-                        columns={columns}
-                        data={dataDummy.sort((a, b)=> a.position - b.position)}
-                        loading={false}
-                        customTableClassName="text-center"
-                        withPagination={true}
-                        withSearch={true}
-                        withDownload={true}
-                        onDownload={()=>{
-                            handleExportGlobal()
-                        }}
-                    />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <Switch
+                        checked={checkedPagination}
+                        onChange={(event) => {
+                            setCheckedPagination(event.currentTarget.checked)
+                        }} 
+                        size="md"
+                        onLabel="ON" 
+                        offLabel="OFF"
+                        label="Enable Pagination"
+                      />
+                      <Switch
+                        checked={checkedSearch}
+                        onChange={(event) => {
+                          setCheckedSearch(event.currentTarget.checked)
+                        }} 
+                        size="md"
+                        onLabel="ON" 
+                        offLabel="OFF"
+                        label="Enable Search Function"
+                      />
+                      <Switch
+                        checked={checkedDownload}
+                        onChange={(event) => {
+                          setCheckedDownload(event.currentTarget.checked)
+                        }} 
+                        size="md"
+                        onLabel="ON" 
+                        offLabel="OFF"
+                        label="Enable Export to Excell"
+                      />
+                      <Switch
+                        checked={checkedCentered}
+                        onChange={(event) => {
+                          setCheckedCentered(event.currentTarget.checked)
+                        }} 
+                        size="md"
+                        onLabel="ON" 
+                        offLabel="OFF"
+                        label="Enable Column Center"
+                      />
+                    </div>
+
+                    {checkedDownload && (
+                      <div className="w-fit">
+                        <TextInput
+                          label={'Label Button Export Excell'}
+                          value={buttonLabel}
+                          placeholder='Input button export label'
+                          onChange={(e)=>{
+                            if(e.target.value === '') {
+                              setButtonLabel(undefined)
+                            } else {
+                              setButtonLabel(e.target.value)
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
+                    
+                    <Code block>
+{`
+  <TabelComp
+    columns={columns}
+    data={dataDummy}
+    loading={false}
+    withPagination={${checkedPagination?'true':'false'}}
+    withSearch={${checkedSearch?'true':'false'}}
+    withDownload={${checkedDownload?'true':'false'}}
+    centered={${checkedCentered?'true':'false'}}
+    downloadBtnLabel={'${buttonLabel??'Export to Excell'}'}
+    onDownload={()=>{
+        handleExportGlobal()
+    }}
+  />
+`}
+                    </Code>
+                  </div>
+                  <div className="flex flex-col">
+                      <TabelComp
+                          columns={columns}
+                          data={dataDummy.sort((a, b)=> a.position - b.position)}
+                          loading={false}
+                          centered={checkedCentered}
+                          withPagination={checkedPagination}
+                          withSearch={checkedSearch}
+                          withDownload={checkedDownload}
+                          downloadBtnLabel={buttonLabel}
+                          onDownload={()=>{
+                              handleExportGlobal()
+                          }}
+                      />
+                  </div>
                 </div>
             </Layout>
             <Modal opened={modalVisible} onClose={()=>{setModalVisible(false)}} title="State Clicked">

@@ -35,7 +35,7 @@ manualPagination?:boolean
 
   return (
     <div className="form-control flex mx-auto w-full">
-      <div className="flex justify-end gap-1">
+      <div className="flex justify-end w-full gap-1">
         <TextInput
         value={value || ""}
           onChange={(e) => {
@@ -49,7 +49,6 @@ manualPagination?:boolean
         className="w-full"
         />
         <Button
-          // variant="default"
           onClick={() => {
             onChange(value);
           }}
@@ -197,6 +196,7 @@ const Table = ({
   withPagination,
   withSearch,
   withDownload,
+  downloadBtnLabel,
   onDownload,
   onAdd,
   customTableClassName,
@@ -206,7 +206,8 @@ const Table = ({
   manualPagination,
   pgIdx, 
   setPgIdx,
-  classTitleName
+  classTitleName,
+  centered
   
 }: any): JSX.Element => {
   // Use the state and functions returned from useTable to build your UI
@@ -252,7 +253,7 @@ const Table = ({
               onClick={onDownload}
               disabled={data.length === 0}
             >
-              <RiFileExcel2Fill className="mr-2"/>Download
+              <RiFileExcel2Fill className="mr-2"/>{downloadBtnLabel ?? 'Export to Excell'}
             </Button>
           ) : null
         }
@@ -287,9 +288,7 @@ const Table = ({
       <div className={`overflow-x-auto w-full ${fullTable?'overflow-x-visible':''}`}>
         <table
           {...getTableProps()}
-          className={`table table-zebra w-full   ${String(
-            customTableClassName ?? ""
-          )}`}
+          className={`table table-zebra w-full ${String(customTableClassName ?? "")} ${centered?'text-center':'text-left'}`}
         >
           <thead className="bg-slate-700/30">
             {headerGroups.map((headerGroup: any) => (
