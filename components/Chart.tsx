@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
+import Chart, { ChartTypeRegistry } from 'chart.js/auto';
 import 'chartjs-plugin-datalabels';
 
 interface ChartDataset {
     label: string;
     data: number[];
-    backgroundColor: string | string[];
-    borderColor: string | string[];
-    borderWidth: number;
+    backgroundColor?: string | string[];
+    borderColor?: string | string[];
+    borderWidth?: number;
 }
   
 export interface ChartData {
@@ -17,7 +17,7 @@ export interface ChartData {
 
 interface ChartComponentProps {
   data: ChartData
-  type?: 'bar' | 'bubble' | 'doughnut' | 'line' | 'pie' | 'polarArea' | 'radar' | 'scatter'
+  type: keyof ChartTypeRegistry
 }
 
 const ChartComponent: React.FC<ChartComponentProps> = ({ data, type }) => {
@@ -33,7 +33,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ data, type }) => {
             }
 
             chartInstance.current = new Chart(ctx, {
-            type: type??'bar',
+            type: type,
             data: data,
             options: {
                 plugins: {
@@ -60,7 +60,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ data, type }) => {
                 chartInstance.current.destroy();
             }
         };
-    }, [data]);
+    }, [data, type]);
 
     return <canvas ref={chartRef} />;
 };

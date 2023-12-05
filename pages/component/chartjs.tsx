@@ -1,19 +1,65 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Layout from '@/components/Layout'
 import Head from 'next/head'
 import appConfig from '../../app.json'
 import TitlePage from '@/components/TitlePage'
 import ChartComponent, { ChartData } from '@/components/Chart'
-import { Text } from '@mantine/core'
+import { Button, Code, Select, Text } from '@mantine/core'
+import { ChartTypeRegistry } from 'chart.js'
 
 export default function ChartPage() {
 
-    const sampleChartData: ChartData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'],
+    interface TChart {
+        label: string
+        value: number
+    }
+
+    const [typeChart, setTypeChart] = useState<keyof ChartTypeRegistry>('bar')
+    const [dataChart, setDataChart] = useState<TChart[]|undefined>(undefined)
+
+    const startingData = (() => {
+        const data = [];
+        for (let i = 0; i < 10; i++) {
+            data.push({
+                label: `Data ${i + 1}`, // Labels like "Data 1", "Data 2", ...
+                value: Math.floor(Math.random() * 1000) + 1, // Random value between 1 and 1000
+            });
+        }
+        return data;
+    })();
+    
+    const handleAdd = (): void => {
+        if (dataChart) {
+            const lastLabelNumber = Number(dataChart[dataChart.length - 1].label.replace('Data ', ''));
+            const newLabel = `Data ${lastLabelNumber + 1}`;
+            const newDataChart = [
+                ...dataChart,
+                {
+                label: newLabel,
+                value: Math.floor(Math.random() * 1000) + 1, // Random value between 1 and 1000
+                },
+            ];
+            setDataChart(newDataChart);
+        }
+    }
+
+    const handleRemove = (): void => {
+        if (dataChart) {
+            const newDataChart = [...dataChart.slice(1)]
+            if(dataChart.length>1){
+                setDataChart(newDataChart);
+            }
+        }
+    }
+
+    const labelsArray = dataChart?.map((e) => e.label);
+    const valuesArray = dataChart?.map((e) => e.value);
+    const useChartData: ChartData = {
+        labels: labelsArray as string[],
         datasets: [
           {
             label: 'Data',
-            data: [14, 59, 80, 81, 56, 55, 40, 81, 56, 55, 40],
+            data: valuesArray as number[],
             backgroundColor: [
                 'rgba(54, 162, 235, 0.5)',  // Blue color
                 'rgba(255, 205, 86, 0.5)',  // Yellow color
@@ -47,6 +93,10 @@ export default function ChartPage() {
         ],
     }
 
+    useEffect(() => {
+        setDataChart(startingData)
+    }, [])
+
     return (
         <>
             <Head>
@@ -55,34 +105,67 @@ export default function ChartPage() {
             <Layout>
                 <TitlePage label='Chart Statistic' />
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white rounded-xl p-4">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-end gap-4">
+                            <Select
+                                label="Select type chart"
+                                placeholder="Pick one"
+                                value={typeChart}
+                                data={[
+                                    { value: 'bar', label: 'Bar' },
+                                    { value: 'line', label: 'Line' },
+                                    { value: 'doughnut', label: 'Doughnut' },
+                                    { value: 'pie', label: 'Pie' },
+                                    { value: 'polarArea', label: 'Polar Area' },
+                                    { value: 'radar', label: 'Radar' },
+                                ]}
+                                onChange={(e)=>{
+                                    setTypeChart(e as keyof ChartTypeRegistry)
+                                }}
+                            />
+                            <div className="flex gap-4">
+                                <Button
+                                onClick={handleAdd}
+                                >
+                                    Add Data
+                                </Button>
+                                <Button
+                                variant='outline'
+                                onClick={handleRemove}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        </div>
+                        <Code block>
+                        {`
+    dataChart = [${dataChart?.map((e)=> (
+        `
+        {label: "${e.label}", value: "${e.value}"}`
+    ))}
+    ]
+
+    const labelsArray = dataChart?.map((e) => e.label);
+    const valuesArray = dataChart?.map((e) => e.value);
+    const useChartData: ChartData = {
+        labels: labelsArray as string[],
+        datasets: [
+            {
+                label: 'Data',
+                data: valuesArray as number[],
+            }
+        ]
+
+    <ChartComponent
+        data={useChartData}
+        type={"${typeChart}"}
+    />
+                        `}
+                        </Code>
+                    </div>
+                    <div className="bg-white rounded-xl p-4 h-fit">
                         <Text c={'dark'}>Bar Type</Text>
-                        <ChartComponent data={sampleChartData} type='bar' />
-                    </div>
-
-                    <div className="bg-white rounded-xl p-4">
-                        <Text c={'dark'}>Line Type</Text>
-                        <ChartComponent data={sampleChartData} type='line' />
-                    </div>
-
-                    <div className="bg-white rounded-xl p-4">
-                        <Text c={'dark'}>Pie Type</Text>
-                        <ChartComponent data={sampleChartData} type='pie' />
-                    </div>
-
-                    <div className="bg-white rounded-xl p-4">
-                        <Text c={'dark'}>PolarArea Type</Text>
-                        <ChartComponent data={sampleChartData} type='polarArea' />
-                    </div>
-
-                    <div className="bg-white rounded-xl p-4">
-                        <Text c={'dark'}>Radar Type</Text>
-                        <ChartComponent data={sampleChartData} type='radar' />
-                    </div>
-
-                    <div className="bg-white rounded-xl p-4">
-                        <Text c={'dark'}>Doughnut Type</Text>
-                        <ChartComponent data={sampleChartData} type='doughnut' />
+                        <ChartComponent data={useChartData} type={typeChart} />
                     </div>
                 </div>
             </Layout>
