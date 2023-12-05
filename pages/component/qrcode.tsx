@@ -37,7 +37,7 @@ export default function QrCodePage() {
             <Layout>
                 <TitlePage label='QR Code Component' />
                 <div className="flex flex-col">
-                    <div className="grid grid-cols-2 gap-4 items-center min-h-[200px]">
+                    <div className="grid grid-cols-2 gap-4 min-h-[200px]">
                         <div className="flex flex-col gap-4">
                             <div className="flex items-end gap-4">
                                 <TextInput
@@ -88,22 +88,7 @@ export default function QrCodePage() {
                                 offLabel="OFF"
                                 label="Enable Download Function"
                             />
-                            
-                        </div>
-                        <div className="flex gap-4 items-center">
-                            <QRDownload
-                                value={qrValue}
-                                size={120}
-                                variant={checked ? 'download' : 'default'}
-                                labelSave={labelSave??'Save'}
-                            />
-                            <div className="">
-                                <Text>Value of QR Code : {qrValue}</Text>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="">
-                        <Code block>
+                            <Code block>
                             {`
     <QRDownload
         value={"${qrValue}"}
@@ -113,7 +98,21 @@ export default function QrCodePage() {
     />
                             `}
                         </Code>
+                        </div>
+                        <div className="flex flex-col items-center justify-center gap-4">
+                            <QRDownload
+                                value={qrValue}
+                                size={120}
+                                variant={checked ? 'download' : 'default'}
+                                labelSave={labelSave??'Save'}
+                            />
+                            <div className="text-center">
+                                <Text>Value of QR Code:</Text>
+                                <Text>{qrValue}</Text>
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
             </Layout>
         </>
