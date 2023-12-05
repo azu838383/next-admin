@@ -3,7 +3,7 @@ import Layout from '@/components/Layout'
 import Head from 'next/head'
 import appConfig from '../../app.json'
 import TitlePage from '@/components/TitlePage'
-import { Text } from '@mantine/core'
+import { Text, Title } from '@mantine/core'
 
 export default function Dashboard() {
 
@@ -16,13 +16,13 @@ export default function Dashboard() {
       <TitlePage label='Dashboard' />
       <div className="w-[1024px] mx-auto text-justify">
         <div className="mb-2">
-          <Text size='xl'>Introduction</Text>
+          <Title order={2}>Introduction</Title>
           <Text size='sm'>
             The objective of this project is to develop a versatile and efficient admin panel template using Mantine components. Leveraging the robustness and flexibility of Mantine, this initiative aims to streamline the process of building powerful admin interfaces.
           </Text>
         </div>
         <div className="mb-2">
-          <Text size='xl'>Project Goals</Text>
+          <Title order={2}>Project Goals</Title>
           <Text size='sm'>
             <b>Utilization of Mantine Components:</b> The project centers around harnessing {"Mantine's"} diverse and customizable set of UI components. These components are instrumental in crafting an intuitive, responsive, and visually appealing admin panel.
           </Text>
@@ -34,9 +34,9 @@ export default function Dashboard() {
           </Text>
         </div>
         <div className="mb-2">
-          <Text size='xl'>
+          <Title order={2}>
             Features 
-          </Text>
+          </Title>
           <Text size='sm'>
             <b>Responsive Layout:</b> The admin panel will feature a responsive layout optimized for various devices, ensuring seamless user experiences across different screen sizes.
           </Text>
@@ -54,9 +54,9 @@ export default function Dashboard() {
           </Text>
         </div>
         <div className="mb-2">
-          <Text size='xl'>
+          <Title order={2}>
             Conclusion
-          </Text>
+          </Title>
           <Text size='sm'>
             Creating an admin panel template using Mantine components aims to empower developers by offering a robust foundation for building powerful and user-friendly interfaces. By focusing on ease of use, customizability, and scalability, this project endeavors to accelerate the development process and enhance the overall user experience for admin interfaces.
           </Text>
