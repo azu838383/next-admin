@@ -1,8 +1,9 @@
 import { LoadingOverlay } from '@mantine/core'
 import get from 'lodash/get'
 import React, { createContext, useContext, useState } from 'react'
-import { type ToastPosition, toast } from 'react-toastify'
+import { type ToastPosition, toast, ToastContainer } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
+import 'react-toastify/dist/ReactToastify.css';
 
 const DEFAULT_LOADING_STATE = {
   children: null,
@@ -112,6 +113,7 @@ export const LoadingProvider = ({ children }: { children: React.ReactNode }): JS
     <LoadingContext.Provider value={loading}>
       {children}
       <LoadingSpinner {...loading.loadingState} />
+      <ToastContainer />
     </LoadingContext.Provider>
   )
 }
