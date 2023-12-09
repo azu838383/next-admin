@@ -12,6 +12,7 @@ import {
   IconFileAnalytics,
   IconAdjustments,
   IconLock,
+  IconChevronRight,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
 import { LinksGroup } from '../navbarLinkGroup';
@@ -95,8 +96,16 @@ export function SideNavbar({
             <div className={classes.footer}>
               <Menu shadow="md" width={200} position="right-end">
                 <Menu.Target>
-                  <UnstyledButton className="w-full">
+                  <UnstyledButton className="w-full flex items-center">
                     <LinksGroup icon={IconUser} image="/img/user.webp" label="Account"  />
+                    <IconChevronRight
+                      className={''}
+                      stroke={1.5}
+                      style={{
+                        width: rem(18),
+                        height: rem(18),
+                      }}
+                    />
                   </UnstyledButton>
                 </Menu.Target>
 

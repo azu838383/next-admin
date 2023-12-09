@@ -165,7 +165,7 @@ export default function ChartPage() {
                         </Code>
                     </div>
                     <div className="bg-white rounded-xl p-4 h-fit">
-                        <Text c={'dark'}>Bar Type</Text>
+                        <Text c={'dark'} className='capitalize'>{typeChart} Type</Text>
                         <ChartComponent data={useChartData} type={typeChart} />
                     </div>
                 </div>

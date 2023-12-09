@@ -55,7 +55,7 @@ const QRDownload: React.FC<PropCard> = ({ value, qrname, className, variant, siz
 
   const downloadQR = (): ReactElement => {
     return (
-      <div>
+      <div className='flex flex-col items-center'>
         <QRCode value={value} className={`p-2 bg-white ${className}`} size={size} id="qrcode-canvas"/>
         <div className="flex flex-col items-center">
           <Button
