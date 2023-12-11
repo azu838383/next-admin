@@ -72,6 +72,14 @@ export default function LoadingPage() {
                         >
                             Loading Overlay
                         </Button>
+                        <Button
+                        bg={'red'}
+                        onClick={(error)=>{
+                            handleError(error)
+                        }}
+                        >
+                            Error Catching, can be use on trycatch function
+                        </Button>
                     </div>
                 </div>
             </Layout>
