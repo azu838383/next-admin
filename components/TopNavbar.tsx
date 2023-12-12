@@ -8,17 +8,17 @@ import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { GENERAL } from '@/store/actions/actionTypes';
 import { RootState } from '@/store/reducers';
+import TitlePage from './TitlePage';
 
 const TopNavbar = ({
   opened,
-  delayState,
   notificationOpen
 }:{
   opened: boolean
-  delayState: ()=> void
   notificationOpen: ()=> void
 }): JSX.Element => {
 	const dispatch = useDispatch()
+    const { pageTitle } = useSelector((state: RootState) => state.historyTab)
     const { hamburger } = useSelector((state: RootState) => state.general)
 	const dataSpotlight = useMemo((): SpotlightActionData[] => {
 		const data = listMenu.filter((f) => !f.links).map((menuItem) => ({
@@ -50,12 +50,11 @@ const TopNavbar = ({
 	return (
 		<>
 			<div className="relative select-none shadow-inner">
-				<div className={`fixed z-10 right-0 flex justify-between items-center px-4 h-[60px] max-h-[60px] bg-slate-900 ${opened ? 'w-[calc(100%-250px)]' : 'w-full'}`}>
-					<div className="flex">
+				<div className={`fixed z-10 right-0 flex justify-between items-center px-4 h-[60px] max-h-[60px] bg-slate-900 transition-all duration-300 ${opened ? 'w-[calc(100%-250px)]' : 'w-full'}`}>
+					<div className="flex items-center">
 						<Burger
 						opened={hamburger}
 						onClick={()=>{
-							delayState()
 							dispatch({
 								type: GENERAL.SET_SIDEBAR_STATE,
 								payload: !hamburger
@@ -63,6 +62,7 @@ const TopNavbar = ({
 						}}
 						aria-label="Toggle navigation"
 						/>
+      					<TitlePage label={pageTitle} />
 					</div>
 					<Link href={"#"} className={`absolute left-0 right-0 w-fit mx-auto transition-all ${opened ? 'opacity-0' : 'opacity-100'}`}>
 						<Image

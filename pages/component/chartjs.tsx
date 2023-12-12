@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import Layout from '@/components/Layout'
+import Layout from '@/components/layout'
 import Head from 'next/head'
 import appConfig from '../../app.json'
 import TitlePage from '@/components/TitlePage'
 import ChartComponent, { ChartData } from '@/components/Chart'
 import { Button, Code, Select, Text } from '@mantine/core'
 import { ChartTypeRegistry } from 'chart.js'
+import CardLayout from '@/components/layout/CardLayout'
 
 export default function ChartPage() {
 
@@ -14,12 +15,12 @@ export default function ChartPage() {
         value: number
     }
 
-    const [typeChart, setTypeChart] = useState<keyof ChartTypeRegistry>('bar')
+    const [typeChart, setTypeChart] = useState<keyof ChartTypeRegistry>('line')
     const [dataChart, setDataChart] = useState<TChart[]|undefined>(undefined)
 
     const startingData = (() => {
         const data = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             data.push({
                 label: `Data ${i + 1}`, // Labels like "Data 1", "Data 2", ...
                 value: Math.floor(Math.random() * 1000) + 1, // Random value between 1 and 1000
@@ -103,70 +104,83 @@ export default function ChartPage() {
             <title>Chart Statistic | {appConfig.name}</title>
             </Head>
             <Layout>
-                <TitlePage label='Chart Statistic' />
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-4">
-                        <div className="flex items-end gap-4">
-                            <Select
-                                label="Select type chart"
-                                placeholder="Pick one"
-                                value={typeChart}
-                                data={[
-                                    { value: 'bar', label: 'Bar' },
-                                    { value: 'line', label: 'Line' },
-                                    { value: 'doughnut', label: 'Doughnut' },
-                                    { value: 'pie', label: 'Pie' },
-                                    { value: 'polarArea', label: 'Polar Area' },
-                                    { value: 'radar', label: 'Radar' },
-                                ]}
-                                onChange={(e)=>{
-                                    setTypeChart(e as keyof ChartTypeRegistry)
-                                }}
-                            />
-                            <div className="flex gap-4">
-                                <Button
-                                onClick={handleAdd}
-                                >
-                                    Add Data
-                                </Button>
-                                <Button
-                                variant='outline'
-                                onClick={handleRemove}
-                                >
-                                    Remove
-                                </Button>
-                            </div>
-                        </div>
-                        <Code block>
-                        {`
-    dataChart = [${dataChart?.map((e)=> (
-        `
-        {label: "${e.label}", value: "${e.value}"}`
-    ))}
-    ]
+                <div className="flex gap-4">
+                    <div className="flex flex-col w-1/2 gap-4">
+                        <CardLayout>
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-end gap-4">
+                                    <Select
+                                        label="Select type chart"
+                                        placeholder="Pick one"
+                                        value={typeChart}
+                                        data={[
+                                            { value: 'bar', label: 'Bar' },
+                                            { value: 'line', label: 'Line' },
+                                            { value: 'doughnut', label: 'Doughnut' },
+                                            { value: 'pie', label: 'Pie' },
+                                            { value: 'polarArea', label: 'Polar Area' },
+                                            { value: 'radar', label: 'Radar' },
+                                        ]}
+                                        onChange={(e)=>{
+                                            setTypeChart(e as keyof ChartTypeRegistry)
+                                        }}
+                                    />
+                                    <div className="flex gap-4">
+                                        <Button
+                                        onClick={handleAdd}
+                                        >
+                                            Add Data
+                                        </Button>
+                                        <Button
+                                        variant='outline'
+                                        onClick={handleRemove}
+                                        >
+                                            Remove
+                                        </Button>
+                                    </div>
+                                </div>
+                                <Code block>
+                                {`
+            dataChart = [${dataChart?.map((e)=> (
+                `
+                {label: "${e.label}", value: "${e.value}"}`
+            ))}
+            ]
 
-    const labelsArray = dataChart?.map((e) => e.label);
-    const valuesArray = dataChart?.map((e) => e.value);
-    const useChartData: ChartData = {
-        labels: labelsArray as string[],
-        datasets: [
-            {
-                label: 'Data',
-                data: valuesArray as number[],
+            const labelsArray = dataChart?.map((e) => e.label);
+            const valuesArray = dataChart?.map((e) => e.value);
+            const useChartData: ChartData = {
+                labels: labelsArray as string[],
+                datasets: [
+                    {
+                        label: 'Data',
+                        data: valuesArray as number[],
+                    }
+                ]
             }
-        ]
-    }
 
-    <ChartComponent
-        data={useChartData}
-        type={"${typeChart}"}
-    />
-                        `}
-                        </Code>
+            <ChartComponent
+                data={useChartData}
+                type={"${typeChart}"}
+            />
+                                `}
+                                </Code>
+                            </div>
+                        </CardLayout>
                     </div>
-                    <div className="bg-white rounded-xl p-4 h-fit">
-                        <Text c={'dark'} className='capitalize'>{typeChart} Type</Text>
-                        <ChartComponent data={useChartData} type={typeChart} />
+                    <div className="flex flex-col w-1/2 gap-4">
+                        <CardLayout className='h-fit'>
+                            <div className="bg-white rounded-xl p-4 h-fit">
+                                <Text c={'dark'} className='capitalize'>Default Type</Text>
+                                <ChartComponent data={useChartData} />
+                            </div>
+                        </CardLayout>
+                        <CardLayout className='h-fit'>
+                            <div className="bg-white rounded-xl p-4 h-fit">
+                                <Text c={'dark'} className='capitalize'>{typeChart} Type</Text>
+                                <ChartComponent data={useChartData} type={typeChart} />
+                            </div>
+                        </CardLayout>
                     </div>
                 </div>
             </Layout>

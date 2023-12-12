@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '@/components/Layout'
+import Layout from '@/components/layout'
 import { Anchor, Button, Checkbox, Container, Group, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core'
 import classes from './Authentication.module.css'
 import Link from 'next/link'

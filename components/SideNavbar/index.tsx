@@ -64,16 +64,14 @@ export const listMenu = [
 
 export function SideNavbar({
   opened,
-  delayed
 }:{
   opened: boolean
-  delayed: boolean
 }) {
   const { showModal } = useModal()
   const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <div className={`h-screen fixed z-10 bg-slate-900 text-white transition duration-300 w-[0] ${opened?'w-[250px]':'opacity-0'} ${delayed ? 'hidden' : ''}`}>
+    <div className={`h-screen fixed z-20 bg-slate-900 text-white transition-all duration-300 overflow-hidden ${opened?'w-[250px] opacity-1':'opacity-0 w-[0]'}`}>
         <nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
             <div className={classes.header}>
                 <Link href={"/"} className='flex justify-center'>
@@ -99,14 +97,7 @@ export function SideNavbar({
                 <Menu.Target>
                   <UnstyledButton className="w-full flex items-center">
                     <LinksGroup icon={IconUser} image="/img/user.webp" label="Account"  />
-                    <IconChevronRight
-                      className={''}
-                      stroke={1.5}
-                      style={{
-                        width: rem(18),
-                        height: rem(18),
-                      }}
-                    />
+                    
                   </UnstyledButton>
                 </Menu.Target>
 

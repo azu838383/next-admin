@@ -7,6 +7,7 @@ export interface IHistoryPage {
 
 interface StateHistoryPage {
     lists: IHistoryPage[]
+    pageTitle: string
 }
 
 const initialState : StateHistoryPage= {
@@ -15,8 +16,10 @@ const initialState : StateHistoryPage= {
             label: 'Dashboard',
             route: '/dashboard'
         }
-    ]
+    ],
+    pageTitle: ''
 }
+
 
 const historyReducer = (state=initialState, action:any): StateHistoryPage =>{
     switch (action.type) {
@@ -45,6 +48,11 @@ const historyReducer = (state=initialState, action:any): StateHistoryPage =>{
                 route: '/Dashboard'
             }]
            }
+        case HISTORY.SET_PAGE_TITLE:
+        return {
+            ...state,
+            pageTitle: action.payload,
+        }
         default:
             return state
     }

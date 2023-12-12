@@ -17,7 +17,7 @@ export interface ChartData {
 
 interface ChartComponentProps {
   data: ChartData
-  type: keyof ChartTypeRegistry
+  type?: keyof ChartTypeRegistry
 }
 
 const ChartComponent: React.FC<ChartComponentProps> = ({ data, type }) => {
@@ -33,7 +33,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ data, type }) => {
             }
 
             chartInstance.current = new Chart(ctx, {
-            type: type,
+            type: type??'bar',
             data: data,
             options: {
                 plugins: {
