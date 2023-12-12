@@ -4,8 +4,9 @@ import { Group, Box, Collapse, ThemeIcon, rem, Image, Avatar } from '@mantine/co
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import Link from "next/link";
-import { useDispatch } from 'react-redux'
-import { HISTORY } from "@/store/actions/actionTypes";
+import { useDispatch, useSelector } from 'react-redux'
+import { GENERAL, HISTORY } from "@/store/actions/actionTypes";
+import { RootState } from "@/store/reducers";
 
 export interface LinksGroupProps {
   icon: React.FC<any>;
@@ -17,10 +18,10 @@ export interface LinksGroupProps {
   arrowMenu?: boolean
 }
 
-export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, links, arrowMenu }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, image, label, link, links, arrowMenu }: LinksGroupProps) {
   const dispatch = useDispatch()
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const { dropDownSideBar } = useSelector((state: RootState) => state.general)
   const items = (hasLinks ? links : []).map((link) => (
     <Link
       className={classes.link}
@@ -39,7 +40,12 @@ export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, li
 
   return (
     <>
-      <div onClick={() => setOpened((o) => !o)} className={`cursor-pointer ${classes.control}`}>
+      <div onClick={() => {
+        dispatch({
+          type: GENERAL.SET_DROPDOWN_SIDEBAR_STATE,
+          payload: !dropDownSideBar
+        })
+      }} className={`cursor-pointer ${classes.control}`}>
         <Group justify="space-between" gap={0}>
           {link ? (
             <Link
@@ -78,7 +84,7 @@ export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, li
               style={{
                 width: rem(16),
                 height: rem(16),
-                transform: opened ? 'rotate(-90deg)' : 'none',
+                transform: dropDownSideBar ? 'rotate(-90deg)' : 'none',
               }}
             />
           )}
@@ -94,7 +100,7 @@ export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, li
           )}
         </Group>
       </div>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+      {hasLinks ? <Collapse in={dropDownSideBar}>{items}</Collapse> : null}
     </>
   );
 }

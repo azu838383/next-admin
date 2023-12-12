@@ -70,7 +70,7 @@ export function SideNavbar({
   opened: boolean
 }) {
   const { showModal } = useModal()
-  const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} initiallyOpened={false} />);
+  const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
     <div className={`h-screen fixed z-20 bg-slate-900 text-white transition-all duration-300 overflow-hidden ${opened?'w-[250px] opacity-1':'opacity-0 w-[0]'}`}>
