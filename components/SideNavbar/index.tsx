@@ -88,7 +88,7 @@ export function SideNavbar({
                 </Link>
             </div>
 
-            <ScrollArea className={`border-t border-white border-opacity-30 ${classes.links}`}>
+            <ScrollArea className={`${classes.links}`}>
                 <div className={classes.linksInner}>
                     {links}
                 </div>
