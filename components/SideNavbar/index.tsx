@@ -13,6 +13,7 @@ import {
   IconAdjustments,
   IconLock,
   IconChevronRight,
+  IconComponents,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
 import { LinksGroup } from '../navbarLinkGroup';
@@ -24,7 +25,7 @@ export const listMenu = [
   { label: 'Dashboard', icon: IconGauge, link: '/dashboard', desc: 'This is menu dashboard' },
   {
     label: 'Component',
-    icon: IconNotes,
+    icon: IconComponents,
     initiallyOpened: true,
 	new: true,
 	desc: 'All of component will be here',
@@ -35,6 +36,7 @@ export const listMenu = [
       { label: 'Notification & Loading', link: '/component/loading', desc: 'Component Notification & Loading can be use on all of action what you do' },
     ],
   },
+  { label: 'Readme', icon: IconNotes , link: '/readme', desc: 'This is page about this project' },
   // {
   //   label: 'Releases',
   //   icon: IconCalendarStats,
@@ -68,7 +70,7 @@ export function SideNavbar({
   opened: boolean
 }) {
   const { showModal } = useModal()
-  const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = listMenu.map((item) => <LinksGroup {...item} key={item.label} initiallyOpened={false} />);
 
   return (
     <div className={`h-screen fixed z-20 bg-slate-900 text-white transition-all duration-300 overflow-hidden ${opened?'w-[250px] opacity-1':'opacity-0 w-[0]'}`}>
@@ -96,8 +98,7 @@ export function SideNavbar({
               <Menu shadow="md" width={200} position="right-end">
                 <Menu.Target>
                   <UnstyledButton className="w-full flex items-center">
-                    <LinksGroup icon={IconUser} image="/img/user.webp" label="Account"  />
-                    
+                    <LinksGroup icon={IconUser} image="/img/user.webp" label="Account" arrowMenu />
                   </UnstyledButton>
                 </Menu.Target>
 

@@ -14,9 +14,10 @@ export interface LinksGroupProps {
   initiallyOpened?: boolean;
   link?: string;
   links?: { label: string; link: string }[];
+  arrowMenu?: boolean
 }
 
-export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, links }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, links, arrowMenu }: LinksGroupProps) {
   const dispatch = useDispatch()
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -42,6 +43,7 @@ export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, li
         <Group justify="space-between" gap={0}>
           {link ? (
             <Link
+            className="w-full"
             href={String(link)}
             onClick={()=>{
               dispatch({
@@ -77,6 +79,16 @@ export function LinksGroup({ icon: Icon, image, label, initiallyOpened, link, li
                 width: rem(16),
                 height: rem(16),
                 transform: opened ? 'rotate(-90deg)' : 'none',
+              }}
+            />
+          )}
+          {arrowMenu && (
+            <IconChevronRight
+              className={classes.chevron}
+              stroke={1.5}
+              style={{
+                width: rem(16),
+                height: rem(16),
               }}
             />
           )}
