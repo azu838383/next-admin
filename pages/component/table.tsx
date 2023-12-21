@@ -8,13 +8,26 @@ import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import TitlePage from '@/components/TitlePage'
 import CardLayout from '@/components/layout/CardLayout'
+import { useLocalStorage } from '@mantine/hooks'
 
 export default function TablePage() {
 
-    const [checkedDownload, setCheckedDownload] = useState(false)
-    const [checkedSearch, setCheckedSearch] = useState(false)
-    const [checkedPagination, setCheckedPagination] = useState(false)
-    const [checkedCentered, setCheckedCentered] = useState(false)
+    const [checkedDownload, setCheckedDownload] = useLocalStorage({
+      key: 'togle-download',
+      defaultValue: false,
+    });
+    const [checkedSearch, setCheckedSearch] = useLocalStorage({
+      key: 'togle-search',
+      defaultValue: false,
+    });
+    const [checkedPagination, setCheckedPagination] = useLocalStorage({
+      key: 'togle-pagination',
+      defaultValue: false,
+    });
+    const [checkedCentered, setCheckedCentered] = useLocalStorage({
+      key: 'togle-centered',
+      defaultValue: false,
+    });
     const [buttonLabel, setButtonLabel] = useState<string|undefined>(undefined)
 
     const [state, setState] = useState<string | undefined>(undefined)

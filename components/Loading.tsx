@@ -53,9 +53,11 @@ const useBaseLoading = (): any => {
     type,
     message,
     position,
+    icon,
   }: {
     className?: string
     closingOn?: number
+    icon?:React.ReactNode
     type: string
     message: string
     position?:ToastPosition 
@@ -68,8 +70,8 @@ const useBaseLoading = (): any => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      icon: icon,
       className: twMerge(type === 'success' ? '!bg-[#259073] !text-white' : '', className),
-      
     })
   }
 

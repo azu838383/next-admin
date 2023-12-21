@@ -24,7 +24,7 @@ export function LinksGroup({ icon: Icon, image, label, link, links, arrowMenu }:
   const { dropDownSideBar } = useSelector((state: RootState) => state.general)
   const items = (hasLinks ? links : []).map((link) => (
     <Link
-      className={classes.link}
+      className={`${classes.link} !border-l-0 !pl-[30px] !ml-0 hover:text-[#82c8fd]`}
       href={link.link}
       key={link.label}
       onClick={()=>{
@@ -34,7 +34,9 @@ export function LinksGroup({ icon: Icon, image, label, link, links, arrowMenu }:
         })
       }}
     >
-      {link.label}
+      <div className="border-l pl-5 border-[#74c0fc]">
+        {link.label}
+      </div>
     </Link>
   ));
 

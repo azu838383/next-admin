@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Layout from '@/components/layout'
 import Head from 'next/head'
 import appConfig from '../../app.json'
-import TitlePage from '@/components/TitlePage'
 import { Button } from '@mantine/core'
 import { useLoading } from '@/components/Loading'
-import { ToastContainer, toast } from 'react-toastify'
 import CardLayout from '@/components/layout/CardLayout'
+import { FaClock } from "react-icons/fa";
 
 export default function LoadingPage() {
     const { addNotification, handleError, showLoadingSpinner, hideLoadingSpinner }: any = useLoading()
@@ -35,6 +34,8 @@ export default function LoadingPage() {
                                     title: 'Notification Default',
                                     message: 'This default notification',
                                     type: 'info',
+                                    icon: <FaClock size={24} />,
+                                    closingOn:1000
                                 })
                             }}
                             >
