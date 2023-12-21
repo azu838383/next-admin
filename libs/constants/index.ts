@@ -3,7 +3,7 @@ const API_URL = 'https://bokemium.com:7023'
 
 export { API_URL, LIST_LANGUAGE }
 
-export type TLang = 'en' | 'id' 
+export const IMG_LOCAL_URL = '/img'
 
 export const countryCodes = [
   {
@@ -38,55 +38,6 @@ export const countryCodes = [
   },
 ]
 
-export const LIST_BANK = [
-	{
-		bankName: 'BANK CENTRAL ASIA (BCA)',
-    type: 'bank',
-		img: 'bca.png'
-	},
-	{
-		bankName: 'BANK NEGARA INDONESIA (BNI)',
-    type: 'bank',
-		img: 'bni.png'
-	},
-  {
-		bankName: 'BANK MANDIRI (MANDIRI)',
-    type: 'bank',
-		img: 'mandiri.png'
-	},
-  {
-		bankName: 'BANK RAKYAT INDONESIA (BRI)',
-    type: 'bank',
-		img: 'bri.png'
-	},
-  {
-		bankName: 'BANK TABUNGAN NEGARA (BTN)',
-    type: 'bank',
-		img: 'btn.png'
-	},
-  {
-		bankName: 'BANK PERMATA (PERMATA)',
-    type: 'bank',
-		img: 'permata.png'
-	},
-  {
-		bankName: 'DANA',
-    type: 'e-wallet',
-		img: 'dana.png'
-	},
-	{
-		bankName: 'OVO',
-    type: 'e-wallet',
-		img: 'ovo.png'
-	},
-  {
-		bankName: 'GOPAY',
-    type: 'e-wallet',
-		img: 'gopay.png'
-	},
-]
-
-
 export const RegexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 export const RegexPhone = /^(?:(?:\+62|)\d{8,12}|\+84\d{7,10}|\+63\d{10})$/
@@ -103,8 +54,6 @@ export const RegexTrc = /T[A-Za-z1-9]{33}/
 
 export const RegexURL = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
 
-export const RegexIPV4 =
-  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+export const RegexIPV4 = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 
-export const RegexIPV6 =
-  /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){2,2}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/
+export const RegexIPV6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){2,2}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/

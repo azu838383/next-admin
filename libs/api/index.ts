@@ -56,14 +56,18 @@ const parseFormData = async (data: any): Promise<FormData> => {
         }
         else if (item instanceof Date) {
           const formattedDate = item.toISOString().slice(0, 19).replace('T', ' ');
+          // const formattedDate = item.toUTCString();
           formData.append(`${key}[${index}]`, formattedDate);
+        }
+        else if (typeof item === 'object' && 'id' in item && 'name' in item) {
+          formData.append(`${key}[${index}].id`, item.id.toString());
+          formData.append(`${key}[${index}].name`, item.name);
         }
       });
     }
   });
   return formData;
-}
-
+};
 
 export const fetcherGET = async (props: API_PROPS): Promise<any> => {
   const response = await api.get(props.url, {
@@ -74,7 +78,7 @@ export const fetcherGET = async (props: API_PROPS): Promise<any> => {
 };
 
 export const fetcherPOST = async (props: API_PROPS): Promise<any> => {
-  if (props.formData) {
+  if(props.formData){
     const data = await parseFormData(props.formData)
     const response = await api.post(`${props.url}`, data, {
       headers: {
@@ -83,7 +87,7 @@ export const fetcherPOST = async (props: API_PROPS): Promise<any> => {
     })
     return response.data;
   }
-  else {
+  else{
     const response = await api.post(props.url, props.data, {
       headers: props.Customheaders,
     });
@@ -92,7 +96,7 @@ export const fetcherPOST = async (props: API_PROPS): Promise<any> => {
 };
 
 export const fetcherPUT = async (props: API_PROPS): Promise<any> => {
-  if (props.formData) {
+  if(props.formData){
     const data = await parseFormData(props.formData)
     const response = await api.put(`${props.url}`, data, {
       headers: {
@@ -101,7 +105,7 @@ export const fetcherPUT = async (props: API_PROPS): Promise<any> => {
     })
     return response.data;
   }
-  else {
+  else{
     const response = await api.put(props.url, props.data, {
       headers: props.Customheaders,
     });
@@ -113,11 +117,11 @@ export const fetcherDELETE = async (props: API_PROPS): Promise<any> => {
   const response = await api.delete(props.url, {
     headers: props.Customheaders,
   });
-  return response;
+  return response; 
 };
 
 export const fetcherPATCH = async (props: API_PROPS): Promise<any> => {
-  if (props.formData) {
+  if(props.formData){
     const data = await parseFormData(props.formData)
     const response = await api.patch(`${props.url}`, data, {
       headers: {
@@ -126,7 +130,7 @@ export const fetcherPATCH = async (props: API_PROPS): Promise<any> => {
     })
     return response.data;
   }
-  else {
+  else{
     const response = await api.patch(props.url, props.data, {
       headers: props.Customheaders,
     });

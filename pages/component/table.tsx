@@ -1,14 +1,15 @@
 import React, { useMemo, useState } from 'react'
 import Layout from '@/components/layout'
-import { Button, Code, Modal, NumberFormatter, Switch, Text, TextInput } from '@mantine/core'
+import { Button, Code, Modal, NumberFormatter, Select, Switch, Text, TextInput, Textarea } from '@mantine/core'
 import TabelComp from '@/components/tableComp'
 import Head from 'next/head'
 import appConfig from '../../app.json'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
-import TitlePage from '@/components/TitlePage'
 import CardLayout from '@/components/layout/CardLayout'
 import { useLocalStorage } from '@mantine/hooks'
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import Image from 'next/image'
 
 export default function TablePage() {
 
@@ -29,6 +30,12 @@ export default function TablePage() {
       defaultValue: false,
     });
     const [buttonLabel, setButtonLabel] = useState<string|undefined>(undefined)
+    const [files, setFiles] = useState<FileWithPath[]>([]);
+
+    const previews = files.map((file, index) => {
+      const imageUrl = URL.createObjectURL(file);
+      return <Image alt='preview' width={150} height={150} className='h-full w-full object-cover' key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
+    })
 
     const [state, setState] = useState<string | undefined>(undefined)
     const [modalVisible, setModalVisible] = useState(false)
@@ -167,6 +174,9 @@ export default function TablePage() {
         saveAs(dataBlob, 'ReportToExcell.xlsx')
       }
 
+      console.log(previews);
+      
+
     return (
         <>
             <Head>
@@ -275,10 +285,83 @@ export default function TablePage() {
                   </CardLayout>
                 </div>
             </Layout>
-            <Modal opened={modalVisible} onClose={()=>{setModalVisible(false)}} title="State Clicked">
-                <Text>
-                    Data State: {state ?? 'Unset'}
-                </Text>
+            <Modal
+              opened={modalVisible}
+              onClose={()=>{
+                setModalVisible(false)
+              }}
+              title="Create Product"
+              size={'md'}
+            >
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-4 items-end">
+                  <div className="flex flex-col w-full">
+                    <TextInput
+                      label="Product Name"
+                      placeholder="Name of product"
+                      withAsterisk
+                    />
+                    <Select
+                      label="Product Category"
+                      placeholder="Choose Product Category"
+                      checkIconPosition="right"
+                      withAsterisk
+                      data={[
+                        {
+                          label: 'Electronic',
+                          value: 'electronic',
+                        },
+                        {
+                          label: 'Fashion',
+                          value: 'fashion',
+                        },
+                        {
+                          label: 'Toys',
+                          value: 'toys',
+                        },
+                        {
+                          label: 'Other',
+                          value: 'other',
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div className="flex flex-col w-fit">
+                    <Text size='sm' className='mb-1'>Product Image</Text>
+                    <Dropzone className='border border-white border-opacity-20 mt-1' accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
+                      <div className="relative w-[95px] h-[95px] object-cover">
+                        {previews.length < 1 ? (
+                          <Text size='sm' className='absolute w-full h-full flex items-center justify-center cursor-pointer transition-all'>Drop here</Text>
+                          ):(
+                          <Text size='sm' className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all hover:bg-black hover:bg-opacity-50 opacity-0 hover:opacity-100`}>Click here</Text>
+                        )}
+                        {previews}
+                      </div>
+                    </Dropzone>
+                  </div>
+                </div>
+                <Textarea
+                  label="Product Description"
+                  placeholder='Describe Your Product'
+                  withAsterisk
+                  autosize
+                  minRows={2}
+                  maxRows={4}
+                />
+                <div className="flex gap-2 justify-center mt-2">
+                  <Button>
+                    Submit
+                  </Button>
+                  <Button
+                    variant='outline'
+                    onClick={()=>{
+                      setModalVisible(false)
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
             </Modal>
         </>
     )

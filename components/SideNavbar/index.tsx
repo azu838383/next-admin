@@ -3,16 +3,9 @@ import { Image, Menu, ScrollArea, UnstyledButton, rem } from '@mantine/core';
 import {
   IconNotes,
   IconGauge,
-  IconSettings,
   IconUser,
   IconLogout,
   IconQrcode,
-  IconCalendarStats,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconChevronRight,
   IconComponents,
 } from '@tabler/icons-react';
 import classes from './SideNavbar.module.css';
@@ -37,31 +30,6 @@ export const listMenu = [
     ],
   },
   { label: 'Readme', icon: IconNotes , link: '/readme', desc: 'This is page about this project' },
-  // {
-  //   label: 'Releases',
-  //   icon: IconCalendarStats,
-	// desc: 'This is menu dashboard',
-	// new: false,
-  //   links: [
-  //     { label: 'Upcoming releases', link: '/', desc: 'This is menu dashboard' },
-  //     { label: 'Previous releases', link: '/', desc: 'This is menu dashboard' },
-  //     { label: 'Releases schedule', link: '/', desc: 'This is menu dashboard' },
-  //   ],
-  // },
-  // { label: 'Analytics', icon: IconPresentationAnalytics, link: '/', desc: 'This is menu dashboard' },
-  // { label: 'Contracts', icon: IconFileAnalytics, link: '/', desc: 'This is menu dashboard' },
-  // { label: 'Settings', icon: IconAdjustments, desc: 'This is menu dashboard' },
-  // {
-  //   label: 'Security',
-  //   icon: IconLock,
-	// desc: 'This is menu dashboard',
-	// new: false,
-  //   links: [
-  //     { label: 'Enable 2FA', link: '/', desc: 'This is menu dashboard' },
-  //     { label: 'Change password', link: '/', desc: 'This is menu dashboard' },
-  //     { label: 'Recovery codes', link: '/', desc: 'This is menu dashboard' },
-  //   ],
-  // },
 ];
 
 export function SideNavbar({
