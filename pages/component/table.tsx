@@ -10,34 +10,51 @@ import CardLayout from '@/components/layout/CardLayout'
 import { useLocalStorage } from '@mantine/hooks'
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import Image from 'next/image'
+import { useLoading } from '@/components/Loading'
 
 export default function TablePage() {
 
+    const { addNotification, handleError, showLoadingSpinner, hideLoadingSpinner }: any = useLoading()
     const [checkedDownload, setCheckedDownload] = useLocalStorage({
-      key: 'togle-download',
-      defaultValue: false,
+		key: 'togle-download',
+		defaultValue: false,
     });
     const [checkedSearch, setCheckedSearch] = useLocalStorage({
-      key: 'togle-search',
-      defaultValue: false,
+		key: 'togle-search',
+		defaultValue: false,
     });
     const [checkedPagination, setCheckedPagination] = useLocalStorage({
-      key: 'togle-pagination',
-      defaultValue: false,
+		key: 'togle-pagination',
+		defaultValue: false,
     });
     const [checkedCentered, setCheckedCentered] = useLocalStorage({
-      key: 'togle-centered',
-      defaultValue: false,
+		key: 'togle-centered',
+		defaultValue: false,
     });
+
+	interface IProductPost {
+		product_name: string
+		product_cat: string
+		product_desc: string 
+		product_img: FileWithPath[] | []
+	}
+
+	const initialStateForm: IProductPost = {
+		product_name: '',
+		product_cat: '',
+		product_desc: '',
+		product_img: [],
+	}
+
     const [buttonLabel, setButtonLabel] = useState<string|undefined>(undefined)
-    const [files, setFiles] = useState<FileWithPath[]>([]);
+    const [files, setFiles] = useState<FileWithPath[]>([])
+	const [formData, setFormData] = useState<IProductPost>(initialStateForm)
 
     const previews = files.map((file, index) => {
-      const imageUrl = URL.createObjectURL(file);
-      return <Image alt='preview' width={150} height={150} className='h-full w-full object-cover' key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
+		const imageUrl = URL.createObjectURL(file);
+		return <Image alt='preview' width={150} height={150} className='h-full w-full object-cover' key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
     })
 
-    const [state, setState] = useState<string | undefined>(undefined)
     const [modalVisible, setModalVisible] = useState(false)
 
     const dataDummy = useMemo(() => [
@@ -61,40 +78,39 @@ export default function TablePage() {
 
     const columns = useMemo(() => {
         return [
-        {
-            Header: 'Element position',
-            accessor: 'position',
-        },
-        {
-            Header: 'Atomic mass',
-            accessor: 'mass',
-            Cell: ({ value }: { value: number }) => (
-                <NumberFormatter prefix="$" value={value} thousandSeparator="." decimalSeparator="," />
-            ),
-        },
-        
-        {
-            Header: 'Symbol',
-            accessor: 'symbol',
-        },
-        {
-            Header: 'Element name',
-            accessor: 'name',
-        },
-        {
-            Header: 'Action',
-            accessor: '_',
-            Cell: ({ row }: { row: any }) => (
-                <Button
-                onClick={()=>{
-                    setState(row.original.name)
-                    setModalVisible(true)
-                }}
-                >
-                    Set State
-                </Button>
-            ),
-        },
+			{
+				Header: 'Element position',
+				accessor: 'position',
+			},
+			{
+				Header: 'Atomic mass',
+				accessor: 'mass',
+				Cell: ({ value }: { value: number }) => (
+					<NumberFormatter prefix="$" value={value} thousandSeparator="." decimalSeparator="," />
+				),
+			},
+			
+			{
+				Header: 'Symbol',
+				accessor: 'symbol',
+			},
+			{
+				Header: 'Element name',
+				accessor: 'name',
+			},
+			{
+				Header: 'Action',
+				accessor: '_',
+				Cell: ({ row }: { row: any }) => (
+					<Button
+					onClick={()=>{
+						setModalVisible(true)
+					}}
+					>
+						Set State
+					</Button>
+				),
+			},
         ]
     }, [])
 
@@ -133,12 +149,7 @@ export default function TablePage() {
     
         // Set the header row and apply the header style
         const headerRow = worksheet.getRow(1)
-        headerRow.values = [
-          'Element Position',
-          'Atomic Mass',
-          'Symbol',
-          'Element Name',
-        ]
+        headerRow.values = columns.filter((f)=>f.accessor !== '_').map((e)=> e.Header)
         headerRow.eachCell((cell) => {
           cell.fill = headerStyle.fill
           cell.font = headerStyle.font
@@ -171,11 +182,32 @@ export default function TablePage() {
         const dataBlob = new Blob([excelBuffer], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         })
-        saveAs(dataBlob, 'ReportToExcell.xlsx')
-      }
 
-      console.log(previews);
-      
+        saveAs(dataBlob, 'ReportToExcell.xlsx')
+	}
+
+	const handleSubmit = ():void => {
+		try {
+			showLoadingSpinner()
+			alert(formData.product_name);
+			addNotification({
+				position: 'top-right',
+				message: 'Form Data ready to submit',
+				type: 'success',
+			})
+			setModalVisible(false)
+			handleReset()
+		} catch (error) {
+			handleError(error)
+		} finally {
+            hideLoadingSpinner()
+		}
+	}
+
+	const handleReset = ():void => {
+		setFormData(initialStateForm)
+		setFiles([])
+	}
 
     return (
         <>
@@ -293,75 +325,96 @@ export default function TablePage() {
               title="Create Product"
               size={'md'}
             >
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-4 items-end">
-                  <div className="flex flex-col w-full">
-                    <TextInput
-                      label="Product Name"
-                      placeholder="Name of product"
-                      withAsterisk
-                    />
-                    <Select
-                      label="Product Category"
-                      placeholder="Choose Product Category"
-                      checkIconPosition="right"
-                      withAsterisk
-                      data={[
-                        {
-                          label: 'Electronic',
-                          value: 'electronic',
-                        },
-                        {
-                          label: 'Fashion',
-                          value: 'fashion',
-                        },
-                        {
-                          label: 'Toys',
-                          value: 'toys',
-                        },
-                        {
-                          label: 'Other',
-                          value: 'other',
-                        },
-                      ]}
-                    />
-                  </div>
-                  <div className="flex flex-col w-fit">
-                    <Text size='sm' className='mb-1'>Product Image</Text>
-                    <Dropzone className='border border-white border-opacity-20 mt-1' accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
-                      <div className="relative w-[95px] h-[95px] object-cover">
-                        {previews.length < 1 ? (
-                          <Text size='sm' className='absolute w-full h-full flex items-center justify-center cursor-pointer transition-all'>Drop here</Text>
-                          ):(
-                          <Text size='sm' className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all hover:bg-black hover:bg-opacity-50 opacity-0 hover:opacity-100`}>Click here</Text>
-                        )}
-                        {previews}
-                      </div>
-                    </Dropzone>
-                  </div>
-                </div>
-                <Textarea
-                  label="Product Description"
-                  placeholder='Describe Your Product'
-                  withAsterisk
-                  autosize
-                  minRows={2}
-                  maxRows={4}
-                />
-                <div className="flex gap-2 justify-center mt-2">
-                  <Button>
-                    Submit
-                  </Button>
-                  <Button
-                    variant='outline'
-                    onClick={()=>{
-                      setModalVisible(false)
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
+				<div className="flex flex-col gap-2">
+					<div className="flex gap-4 items-end">
+						<div className="flex flex-col w-full">
+							<TextInput
+								label="Product Name"
+								placeholder="Name of product"
+								withAsterisk
+								value={formData?.product_name}
+								onChange={(e)=>{
+									setFormData({...formData, product_name: e.target.value})
+								}}
+							/>
+							<Select
+								label="Product Category"
+								placeholder="Choose Product Category"
+								checkIconPosition="right"
+								withAsterisk
+								value={formData.product_cat}
+								onChange={(e)=>{
+									setFormData({...formData, product_cat: String(e)})
+								}}
+								data={[
+									{
+									label: 'Electronic',
+									value: 'electronic',
+									},
+									{
+									label: 'Fashion',
+									value: 'fashion',
+									},
+									{
+									label: 'Toys',
+									value: 'toys',
+									},
+									{
+									label: 'Other',
+									value: 'other',
+									},
+								]}
+							/>
+						</div>
+						<div className="flex flex-col w-fit">
+							<Text size='sm' className='mb-1'>Product Image</Text>
+							<Dropzone className='border border-white border-opacity-20 mt-1' accept={IMAGE_MIME_TYPE}
+							onDrop={(e)=>{
+								setFiles(e)
+								setFormData({...formData, product_img: e})
+							}}>
+							<div className="relative w-[95px] h-[95px] object-cover">
+								{previews.length < 1 ? (
+								<Text size='sm' className='absolute w-full h-full flex items-center justify-center cursor-pointer transition-all'>Drop here</Text>
+								):(
+								<Text size='sm' className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all hover:bg-black hover:bg-opacity-50 opacity-0 hover:opacity-100`}>Click here</Text>
+								)}
+								{previews}
+							</div>
+							</Dropzone>
+						</div>
+					</div>
+					<Textarea
+						label="Product Description"
+						placeholder='Describe Your Product'
+						withAsterisk
+						autosize
+						minRows={2}
+						maxRows={4}
+						value={formData?.product_desc}
+						onChange={(e)=>{
+							setFormData({...formData, product_desc: e.target.value})
+						}}
+					/>
+					<div className="flex gap-2 justify-center mt-2">
+						<Button
+						onClick={()=>{
+							handleSubmit()
+						}}
+						>
+							Submit
+						</Button>
+						<Button
+							variant='outline'
+							onClick={()=>{
+								setModalVisible(false)
+								handleReset()
+							}}
+						>
+							Cancel
+						</Button>
+					</div>
+				</div>
             </Modal>
         </>
     )
