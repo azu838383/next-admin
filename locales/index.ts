@@ -1,7 +1,7 @@
-import en from './en'
-import id from './id'
+import en from "./en";
+import id from "./id";
 
 export default {
-  en,
-  id,
-}
+	en,
+	id,
+};

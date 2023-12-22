@@ -1,14 +1,14 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement } from "react";
 
 export interface ILinkSideBar {
-    label: string
-    link?: string
+	label: string;
+	link?: string;
 }
-  
+
 export interface IListMenuSideBar {
-    label: string
-    icon: ReactElement
-    link?: string
-    initiallyOpened?: boolean
-    links?: ILinkSideBar[]
+	label: string;
+	icon: ReactElement;
+	link?: string;
+	initiallyOpened?: boolean;
+	links?: ILinkSideBar[];
 }
