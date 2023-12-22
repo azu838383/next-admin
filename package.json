@@ -55,6 +55,7 @@
     "redux-thunk": "^2.4.2",
     "reduxjs-toolkit-persist": "^7.2.1",
     "secure-ls": "^1.2.6",
+    "swr": "^2.2.4",
     "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {

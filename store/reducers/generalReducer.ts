@@ -4,14 +4,14 @@ export interface GeneralState {
   theme: 'dark' | 'light'
   hamburger:boolean
   hamburgDelay:boolean
-  dropDownSideBar:boolean
+  dropDownSideBar:string[]
 }
 
 const initialState:GeneralState = {
   theme: 'dark',
   hamburger: true,
   hamburgDelay: false,
-  dropDownSideBar: false
+  dropDownSideBar: []
 }
 
 const generalReducer = (state = initialState, action: any): GeneralState => {

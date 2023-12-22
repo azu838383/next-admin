@@ -11,6 +11,7 @@ import { useLocalStorage } from '@mantine/hooks'
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import Image from 'next/image'
 import { useLoading } from '@/components/Loading'
+import { CreateProduct, IProductPost } from '@/libs/api/product'
 
 export default function TablePage() {
 
@@ -31,13 +32,6 @@ export default function TablePage() {
 		key: 'togle-centered',
 		defaultValue: false,
     });
-
-	interface IProductPost {
-		product_name: string
-		product_cat: string
-		product_desc: string 
-		product_img: FileWithPath[] | []
-	}
 
 	const initialStateForm: IProductPost = {
 		product_name: '',
@@ -186,10 +180,10 @@ export default function TablePage() {
         saveAs(dataBlob, 'ReportToExcell.xlsx')
 	}
 
-	const handleSubmit = ():void => {
+	const handleSubmit = async (): Promise<any> => {
 		try {
 			showLoadingSpinner()
-			alert(formData.product_name);
+			await CreateProduct(formData);
 			addNotification({
 				position: 'top-right',
 				message: 'Form Data ready to submit',
