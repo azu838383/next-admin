@@ -211,17 +211,48 @@ export default function TablePage() {
 		saveAs(dataBlob, "ReportToExcell.xlsx");
 	};
 
+	const [stateError, setStateError] = useState<Record<string,string>>({})
+
+	const validation = () : boolean => {
+		let error : Record<string, string> = {}
+		if(formData.product_name.length < 6) {
+			error.product_name = "Product name must be more than 6 Character"
+		}
+		if(formData.product_cat.toLowerCase() === "" )
+		{
+			error.product_cat = "Product category must be choosen"
+		}
+		if(formData.product_desc.length < 6)
+		{
+			error.product_desc = "Product description must be more than 6 characters"
+		}
+		if(formData.product_img.length === 0)
+		{
+			error.product_img = "Please upload product image"
+		}
+		setStateError(error)
+		return (
+			formData.product_name.length >= 6 &&
+			formData.product_cat.toLowerCase() !== "" &&
+			formData.product_desc.length >= 6 &&
+			formData.product_img.length !== 0
+		)
+	}
+
 	const handleSubmit = async (): Promise<any> => {
 		try {
 			showLoadingSpinner();
-			await CreateProduct(formData);
-			addNotification({
-				position: "top-right",
-				message: "Form Data ready to submit",
-				type: "success",
-			});
-			setModalVisible(false);
-			handleReset();
+			if(validation())
+			{
+				await CreateProduct(formData);
+				addNotification({
+					position: "top-right",
+					message: "Form Data ready to submit",
+					type: "success",
+				});
+				setModalVisible(false);
+				handleReset();
+			}
 		} catch (error) {
 			handleError(error);
 		} finally {
@@ -360,10 +391,11 @@ export default function TablePage() {
 				size={"md"}
 			>
 				<div className="flex flex-col gap-2">
-					<div className="flex gap-4 items-end">
-						<div className="flex flex-col w-full">
+					<div className="flex gap-4">
+						<div className="flex flex-col gap-2 w-full">
 							<TextInput
 								label="Product Name"
+								error={stateError.product_name}
 								placeholder="Name of product"
 								withAsterisk
 								value={formData?.product_name}
@@ -378,6 +410,7 @@ export default function TablePage() {
 								label="Product Category"
 								placeholder="Choose Product Category"
 								checkIconPosition="right"
+								error={stateError.product_cat}
 								withAsterisk
 								value={formData.product_cat}
 								onChange={(e) => {
@@ -406,45 +439,51 @@ export default function TablePage() {
 								]}
 							/>
 						</div>
-						<div className="flex flex-col w-fit">
-							<Text size="sm" className="mb-1">
-								Product Image
-							</Text>
-							<Dropzone
-								className="border border-white border-opacity-20 mt-1"
-								accept={IMAGE_MIME_TYPE}
-								onDrop={(e) => {
-									setFiles(e);
-									setFormData({
-										...formData,
-										product_img: e,
-									});
-								}}
-							>
-								<div className="relative w-[95px] h-[95px] object-cover">
-									{previews.length < 1 ? (
-										<Text
-											size="sm"
-											className="absolute w-full h-full flex items-center justify-center cursor-pointer transition-all"
-										>
-											Drop here
-										</Text>
-									) : (
-										<Text
-											size="sm"
-											className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all hover:bg-black hover:bg-opacity-50 opacity-0 hover:opacity-100`}
-										>
-											Click here
-										</Text>
-									)}
-									{previews}
-								</div>
-							</Dropzone>
+						<div className="flex flex-col w-fit justify-between items-stretch">
+							<div className="">
+								<Text size="sm" className="mb-1 leading-3">
+									Product Image <span className="text-red-500">*</span>
+								</Text>
+								<Dropzone
+									className={`border mt-1 ${stateError.product_img ? "border-red-500" : "border-white border-opacity-20"}`}
+									accept={IMAGE_MIME_TYPE}
+									onDrop={(e) => {
+										setFiles(e);
+										setFormData({
+											...formData,
+											product_img: e,
+										});
+									}}
+								>
+									<div className="relative w-[105px] h-[105px] object-cover">
+										{previews.length < 1 ? (
+											<Text
+												size="sm"
+												className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all ${stateError.product_img ? "!text-red-500" : ""}`}
+											>
+												Drop here
+											</Text>
+										) : (
+											<Text
+												size="sm"
+												className={`absolute w-full h-full flex items-center justify-center cursor-pointer transition-all hover:bg-black hover:bg-opacity-50 opacity-0 hover:opacity-100`}
+											>
+												Click here
+											</Text>
+										)}
+										{previews}
+									</div>
+								</Dropzone>
+							</div>
+							{stateError.product_img && (
+								<Text size="xs" className="!text-red-500 text-center">{stateError.product_img}</Text>
+							)}
 						</div>
 					</div>
 					<Textarea
 						label="Product Description"
 						placeholder="Describe Your Product"
+						error={stateError.product_desc}
 						withAsterisk
 						autosize
 						minRows={2}
