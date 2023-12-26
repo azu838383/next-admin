@@ -333,7 +333,7 @@ export default function TablePage() {
 								{`
     <TabelComp
       columns={columns}
-      data={dataDummy}
+      data={dataProduct?.products ?? []}
       loading={false}
       withPagination={${checkedPagination ? "true" : "false"}}
       withSearch={${checkedSearch ? "true" : "false"}}
