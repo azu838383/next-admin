@@ -2,7 +2,7 @@ import { useLoading } from "@/components/Loading";
 import Layout from "@/components/layout";
 import CardLayout from "@/components/layout/CardLayout";
 import TabelComp from "@/components/tableComp";
-import { CreateProduct, IProductPost } from "@/libs/api/product";
+import { CreateProduct, GetProduct, IProductPost } from "@/libs/api/product";
 import {
 	Button,
 	Code,
@@ -22,6 +22,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import appConfig from "../../app.json";
+import LoaderComponent from "@/components/loader/LoaderComponent";
 
 export default function TablePage() {
 	const {
@@ -59,6 +60,7 @@ export default function TablePage() {
 	);
 	const [files, setFiles] = useState<FileWithPath[]>([]);
 	const [formData, setFormData] = useState<IProductPost>(initialStateForm);
+	const {dataProduct, isLoadingProduct, isErrorProduct, mutateProduct} = GetProduct(true)
 
 	const previews = files.map((file, index) => {
 		const imageUrl = URL.createObjectURL(file);
@@ -77,37 +79,20 @@ export default function TablePage() {
 
 	const [modalVisible, setModalVisible] = useState(false);
 
-	const dataDummy = useMemo(
-		() => [
-			{ position: 1, mass: 12011, symbol: "C", name: "Carbon" },
-			{ position: 7, mass: 14007, symbol: "N", name: "Nitrogen" },
-			{ position: 24, mass: 88906, symbol: "Y", name: "Yttrium" },
-			{ position: 32, mass: 13733, symbol: "Ba", name: "Barium" },
-			{ position: 9, mass: 120011, symbol: "C", name: "Carbon" },
-			{ position: 3, mass: 140007, symbol: "N", name: "Nitrogen" },
-			{ position: 13, mass: 88906, symbol: "Y", name: "Yttrium" },
-			{ position: 4, mass: 137133, symbol: "Ba", name: "Barium" },
-			{ position: 5, mass: 121011, symbol: "C", name: "Carbon" },
-			{ position: 16, mass: 141007, symbol: "N", name: "Nitrogen" },
-			{ position: 18, mass: 886906, symbol: "Y", name: "Yttrium" },
-			{ position: 17, mass: 137833, symbol: "Ba", name: "Barium" },
-			{ position: 19, mass: 129011, symbol: "C", name: "Carbon" },
-			{ position: 20, mass: 143007, symbol: "N", name: "Nitrogen" },
-			{ position: 21, mass: 884906, symbol: "Y", name: "Yttrium" },
-			{ position: 22, mass: 134533, symbol: "Ba", name: "Barium" },
-		],
-		[]
-	);
-
 	const columns = useMemo(() => {
 		return [
 			{
-				Header: "Element position",
-				accessor: "position",
+				Header: "ID",
+				accessor: "id",
 			},
 			{
-				Header: "Atomic mass",
-				accessor: "mass",
+				Header: "Product",
+				accessor: "title",
+				
+			},
+			{
+				Header: "Price",
+				accessor: "price",
 				Cell: ({ value }: { value: number }) => (
 					<NumberFormatter
 						prefix="$"
@@ -117,14 +102,20 @@ export default function TablePage() {
 					/>
 				),
 			},
-
 			{
-				Header: "Symbol",
-				accessor: "symbol",
-			},
-			{
-				Header: "Element name",
-				accessor: "name",
+				Header: "Image",
+				accessor: "images",
+				Cell: ({ value }: { value: string[] }) => (
+					<div className="flex items-center justify-center">
+						<Image
+						alt="product"
+						src={value[0]}
+						height={40}
+						width={40}
+						className="h-[40px] object-cover"
+						/>
+					</div>
+				),
 			},
 			{
 				Header: "Action",
@@ -143,7 +134,7 @@ export default function TablePage() {
 	}, []);
 
 	const handleExportGlobal = async (): Promise<any> => {
-		const data = dataDummy;
+		const data = dataProduct?.products;
 		// Create a new workbook
 		const workbook = new ExcelJS.Workbook();
 		const worksheet = workbook.addWorksheet("ReportToExcell");
@@ -187,9 +178,9 @@ export default function TablePage() {
 		});
 
 		// Populate the data rows and apply the cell style
-		data.forEach((row, index) => {
+		data?.forEach((row, index) => {
 			const dataRow = worksheet.getRow(index + 2);
-			dataRow.values = [row.position, row.mass, row.symbol, row.name];
+			dataRow.values = [row.id, row.title, row.price, row.images[0]];
 			dataRow.eachCell((cell) => {
 				cell.border = cellStyle.border;
 			});
@@ -362,22 +353,30 @@ export default function TablePage() {
 						</div>
 					</CardLayout>
 					<CardLayout>
-						<div className="flex flex-col">
-							<TabelComp
-								columns={columns}
-								data={dataDummy.sort(
-									(a, b) => a.position - b.position
-								)}
-								loading={false}
-								centered={checkedCentered}
-								withPagination={checkedPagination}
-								withSearch={checkedSearch}
-								withDownload={checkedDownload}
-								downloadBtnLabel={buttonLabel}
-								onDownload={() => {
-									handleExportGlobal();
-								}}
-							/>
+						<div className="flex flex-col h-full">
+							<LoaderComponent
+							compLoading={isLoadingProduct}
+							compError={isErrorProduct}
+							compEmpty={Number(dataProduct?.products.length??0) < 1}
+							mutateData={mutateProduct}
+							emptyText="No Data Available"
+							errorText="Sorry... We Couldn't get the data for now.."
+							loadingText="Please Wait... Getting the data from server..."
+							>
+								<TabelComp
+									columns={columns}
+									data={dataProduct?.products??[]}
+									loading={false}
+									centered={checkedCentered}
+									withPagination={checkedPagination}
+									withSearch={checkedSearch}
+									withDownload={checkedDownload}
+									downloadBtnLabel={buttonLabel}
+									onDownload={() => {
+										handleExportGlobal();
+									}}
+								/>
+							</LoaderComponent>
 						</div>
 					</CardLayout>
 				</div>

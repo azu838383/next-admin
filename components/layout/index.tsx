@@ -63,7 +63,7 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
 								hamburger ? "w-[calc(100%-250px)]" : "w-full"
 							}`}
 						>
-							<div className="flex fixed z-10 w-full gap-2 py-4 px-4">
+							<div className="flex fixed z-10 w-full gap-2 py-4 px-4 bg-black">
 								{lists.map((e, index) => (
 									<div
 										key={index}

@@ -1,5 +1,5 @@
 import { LIST_LANGUAGE } from "./language";
-const API_URL = "https://domain.backend:7023";
+const API_URL = "https://dummyjson.com";
 
 export { API_URL, LIST_LANGUAGE };
 

@@ -39,3 +39,14 @@ body {
 	display: flex;
 	flex-direction: column;
 }
+
+.scroll-awesome::-webkit-scrollbar {
+	height: 6px;
+}
+.scroll-awesome::-webkit-scrollbar-track {
+	background: #666; 
+  }
+  .scroll-awesome::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 5px;
+  }
