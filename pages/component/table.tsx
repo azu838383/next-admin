@@ -60,7 +60,7 @@ export default function TablePage() {
 	);
 	const [files, setFiles] = useState<FileWithPath[]>([]);
 	const [formData, setFormData] = useState<IProductPost>(initialStateForm);
-	const {dataProduct, isLoadingProduct, isErrorProduct, mutateProduct} = GetProduct(true)
+	const { dataProduct, isLoadingProduct, isErrorProduct, mutateProduct } = GetProduct(true)
 
 	const previews = files.map((file, index) => {
 		const imageUrl = URL.createObjectURL(file);
@@ -88,7 +88,7 @@ export default function TablePage() {
 			{
 				Header: "Product",
 				accessor: "title",
-				
+
 			},
 			{
 				Header: "Price",
@@ -108,11 +108,11 @@ export default function TablePage() {
 				Cell: ({ value }: { value: string[] }) => (
 					<div className="flex items-center justify-center">
 						<Image
-						alt="product"
-						src={value[0]}
-						height={40}
-						width={40}
-						className="h-[40px] object-cover"
+							alt="product"
+							src={value[0]}
+							height={40}
+							width={40}
+							className="h-[40px] object-cover"
 						/>
 					</div>
 				),
@@ -202,23 +202,20 @@ export default function TablePage() {
 		saveAs(dataBlob, "ReportToExcell.xlsx");
 	};
 
-	const [stateError, setStateError] = useState<Record<string,string>>({})
+	const [stateError, setStateError] = useState<Record<string, string>>({})
 
-	const validation = () : boolean => {
-		let error : Record<string, string> = {}
-		if(formData.product_name.length < 6) {
+	const validation = (): boolean => {
+		let error: Record<string, string> = {}
+		if (formData.product_name.length < 6) {
 			error.product_name = "Product name must be more than 6 Character"
 		}
-		if(formData.product_cat.toLowerCase() === "" )
-		{
+		if (formData.product_cat.toLowerCase() === "") {
 			error.product_cat = "Product category must be choosen"
 		}
-		if(formData.product_desc.length < 6)
-		{
+		if (formData.product_desc.length < 6) {
 			error.product_desc = "Product description must be more than 6 characters"
 		}
-		if(formData.product_img.length === 0)
-		{
+		if (formData.product_img.length === 0) {
 			error.product_img = "Please upload product image"
 		}
 		setStateError(error)
@@ -233,8 +230,7 @@ export default function TablePage() {
 	const handleSubmit = async (): Promise<any> => {
 		try {
 			showLoadingSpinner();
-			if(validation())
-			{
+			if (validation()) {
 				await CreateProduct(formData);
 				addNotification({
 					position: "top-right",
@@ -355,17 +351,17 @@ export default function TablePage() {
 					<CardLayout>
 						<div className="flex flex-col h-full">
 							<LoaderComponent
-							compLoading={isLoadingProduct}
-							compError={isErrorProduct}
-							compEmpty={Number(dataProduct?.products.length??0) < 1}
-							mutateData={mutateProduct}
-							emptyText="No Data Available"
-							errorText="Sorry... We Couldn't get the data for now.."
-							loadingText="Please Wait... Getting the data from server..."
+								compLoading={isLoadingProduct}
+								compError={isErrorProduct}
+								compEmpty={Number(dataProduct?.products.length ?? 0) < 1}
+								mutateData={mutateProduct}
+								emptyText="No Data Available"
+								errorText="Sorry... We Couldn't get the data for now.."
+								loadingText="Please Wait... Getting the data from server..."
 							>
 								<TabelComp
 									columns={columns}
-									data={dataProduct?.products??[]}
+									data={dataProduct?.products ?? []}
 									loading={false}
 									centered={checkedCentered}
 									withPagination={checkedPagination}

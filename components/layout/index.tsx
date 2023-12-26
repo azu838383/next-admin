@@ -59,24 +59,21 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
 					<TopNavbar opened={hamburger} notificationOpen={open} />
 					<div className="w-full p-4">
 						<div
-							className={`absolute bg-black min-h-[calc(100vh-60px)] top-[60px] pb-[75px] right-0 py-4 pt-0 transition-all duration-300 ${
-								hamburger ? "w-[calc(100%-250px)]" : "w-full"
-							}`}
+							className={`absolute bg-black min-h-[calc(100vh-60px)] top-[60px] pb-[75px] right-0 py-4 pt-0 transition-all duration-300 ${hamburger ? "w-[calc(100%-250px)]" : "w-full"
+								}`}
 						>
 							<div className="flex fixed z-10 w-full gap-2 py-4 px-4 bg-black">
 								{lists.map((e, index) => (
 									<div
 										key={index}
 										className={`relative flex flex-row border border-white border-opacity-30 truncate items-center gap-2 transition-all rounded-lg hover:bg-slate-800/60
-                                    pr-8 ${
-										lists.length >= 9 ? "!flex-grow" : ""
-									}
+                                    pr-8 ${lists.length >= 9 ? "!flex-grow" : ""
+											}
                                     ${index === 0 ? "!pr-4" : ""}
-                                    ${
-										Router.pathname === e.route
-											? "bg-slate-800 hover:!bg-slate-800 !cursor-default "
-											: ""
-									}`}
+                                    ${Router.pathname === e.route
+												? "bg-slate-800 hover:!bg-slate-800 !cursor-default "
+												: ""
+											}`}
 									>
 										<div
 											onClick={() => {

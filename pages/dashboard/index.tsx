@@ -14,25 +14,25 @@ export default function Dashboard() {
 	const [limit, setLimit] = useState<number>(8)
 	const [skip, setSkip] = useState<number>(0)
 	const [page, setPage] = useState(1)
-	const {dataProduct, isLoadingProduct, isErrorProduct, mutateProduct} = GetProductWPagination(true, limit ,skip)
+	const { dataProduct, isLoadingProduct, isErrorProduct, mutateProduct } = GetProductWPagination(true, limit, skip)
 
-	const [dataOnState, setDataOnState] = useState<IProductItems[]>(dataProduct?.products??[])
+	const [dataOnState, setDataOnState] = useState<IProductItems[]>(dataProduct?.products ?? [])
 	const [textSearch, setTextSearch] = useState<string>('')
 	const [productId, setProductId] = useState<number>(-1)
 	const [detailVisible, setDetailVisible] = useState(false)
 	const [searchValue, setSearchValue] = useDebouncedState('', 300)
-	const {dataSProduct, isErrorSProduct, isLoadingSProduct, mutateSProduct} = SearchProduct(true, searchValue)
-	const {dataSingleProduct, isErrorSingleProduct, isLoadingSingleProduct, mutateSingleProduct} = GetSingleProduct(detailVisible, productId)
+	const { dataSProduct, isErrorSProduct, isLoadingSProduct, mutateSProduct } = SearchProduct(true, searchValue)
+	const { dataSingleProduct, isErrorSingleProduct, isLoadingSingleProduct, mutateSingleProduct } = GetSingleProduct(detailVisible, productId)
 
-	const totalPage = Math.ceil(Number(dataProduct?.total??0)/limit)
+	const totalPage = Math.ceil(Number(dataProduct?.total ?? 0) / limit)
 	const cardsArray = new Array(limit).fill(null)
 	useEffect(() => {
-		setSkip((page-1) * limit)
+		setSkip((page - 1) * limit)
 		setSearchValue(textSearch)
-		if(searchValue) {
-			setDataOnState(dataSProduct?.products??[])
+		if (searchValue) {
+			setDataOnState(dataSProduct?.products ?? [])
 		} else {
-			setDataOnState(dataProduct?.products??[])
+			setDataOnState(dataProduct?.products ?? [])
 		}
 	}, [page, textSearch, dataProduct, dataSProduct, searchValue])
 
@@ -49,7 +49,7 @@ export default function Dashboard() {
 							leftSection={<MdSearch />}
 							placeholder="Search Product"
 							value={textSearch}
-							onChange={(e)=> {
+							onChange={(e) => {
 								setTextSearch(e.target.value)
 							}}
 						/>
@@ -58,31 +58,31 @@ export default function Dashboard() {
 						{isLoadingProduct || isLoadingSProduct ? (
 							cardsArray.map((_, index) => (
 								<Card
-								  key={index} 
-								  shadow="sm"
-								  padding="lg"
-								  radius="md"
-								  withBorder
-								  className="min-h-[180px] flex flex-col justify-between"
+									key={index}
+									shadow="sm"
+									padding="lg"
+									radius="md"
+									withBorder
+									className="min-h-[180px] flex flex-col justify-between"
 								>
-								  <Card.Section>
-									<Skeleton height={160} radius="none" />
-								  </Card.Section>
-						
-								  <Group justify="space-between" mt="md" mb="xs">
-									<Skeleton height={24} mt={4} radius="xl" width={"70%"} />
-								  </Group>
-								  <Text size="sm" c="dimmed" className="line-clamp-2">
-									<Skeleton height={14} radius="xl" />
-									<Skeleton height={14} mt={10} radius="xl" />
-								  </Text>
-						
-								  <Button color="blue" fullWidth mt="md" radius="md">
-									Detail
-								  </Button>
+									<Card.Section>
+										<Skeleton height={160} radius="none" />
+									</Card.Section>
+
+									<Group justify="space-between" mt="md" mb="xs">
+										<Skeleton height={24} mt={4} radius="xl" width={"70%"} />
+									</Group>
+									<Text size="sm" c="dimmed" className="line-clamp-2">
+										<Skeleton height={14} radius="xl" />
+										<Skeleton height={14} mt={10} radius="xl" />
+									</Text>
+
+									<Button color="blue" fullWidth mt="md" radius="md">
+										Detail
+									</Button>
 								</Card>
-							  ))
-						) : dataOnState.map((e)=> (
+							))
+						) : dataOnState.map((e) => (
 							<Card key={e.id} shadow="sm" padding="lg" radius="md" withBorder className="min-h-[180px] flex flex-col justify-between">
 								<Card.Section>
 									<Image
@@ -98,9 +98,9 @@ export default function Dashboard() {
 									<Text fw={500} className="line-clamp-1 w-[70%]">{e.title}</Text>
 									<Badge className="">
 										<NumberFormatter
-										prefix="$"
-										thousandSeparator
-										value={e.price}
+											prefix="$"
+											thousandSeparator
+											value={e.price}
 										/>
 									</Badge>
 								</Group>
@@ -109,11 +109,11 @@ export default function Dashboard() {
 								</Text>
 
 								<Button
-								onClick={()=>{
-									setProductId(e.id)
-									setDetailVisible(true)
-								}}
-								color="blue" fullWidth mt="md" radius="md">
+									onClick={() => {
+										setProductId(e.id)
+										setDetailVisible(true)
+									}}
+									color="blue" fullWidth mt="md" radius="md">
 									Detail
 								</Button>
 							</Card>
@@ -125,37 +125,37 @@ export default function Dashboard() {
 						</div>
 						<div className="">
 							<Select
-							allowDeselect={false}
-							data={[
-								{
-									label: "1 Row",
-									value: "4"
-								},
-								{
-									label: "2 Row",
-									value: "8"
-								},
-								{
-									label: "3 Row",
-									value: "12"
-								},
-							]}
-							value={String(limit)}
-							onChange={(e)=>{
-								setLimit(Number(e))
-							}}
+								allowDeselect={false}
+								data={[
+									{
+										label: "1 Row",
+										value: "4"
+									},
+									{
+										label: "2 Row",
+										value: "8"
+									},
+									{
+										label: "3 Row",
+										value: "12"
+									},
+								]}
+								value={String(limit)}
+								onChange={(e) => {
+									setLimit(Number(e))
+								}}
 							/>
 						</div>
 					</div>
 				</CardLayout>
 				<Modal
-				opened={detailVisible}
-				onClose={()=>{
-					setDetailVisible(false)
-				}}
-				title="Product Detail"
-				size={"sm"}
-				centered>
+					opened={detailVisible}
+					onClose={() => {
+						setDetailVisible(false)
+					}}
+					title="Product Detail"
+					size={"sm"}
+					centered>
 					{isLoadingSingleProduct ? (
 						<Card
 							shadow="sm"
@@ -165,26 +165,26 @@ export default function Dashboard() {
 							className="min-h-[180px] flex flex-col justify-between"
 						>
 							<Card.Section>
-							<Skeleton height={300} radius="none" />
+								<Skeleton height={300} radius="none" />
 							</Card.Section>
-				
+
 							<Group justify="space-between" mt="md" mb="xs">
-							<Skeleton height={24} mt={4} radius="xl" width={"70%"} />
+								<Skeleton height={24} mt={4} radius="xl" width={"70%"} />
 							</Group>
 							<Text size="sm" c="dimmed" className="line-clamp-2">
-							<Skeleton height={14} radius="xl" />
-							<Skeleton height={14} mt={10} radius="xl" />
+								<Skeleton height={14} radius="xl" />
+								<Skeleton height={14} mt={10} radius="xl" />
 							</Text>
-				
+
 							<Button color="blue" fullWidth mt="md" radius="md">
-							Detail
+								Detail
 							</Button>
 						</Card>
 					) : (
 						<Card shadow="sm" padding="lg" radius="md" withBorder className="min-h-[180px] flex flex-col justify-between">
 							<Card.Section>
 								<Image
-									src={dataSingleProduct?.images[0]??''}
+									src={dataSingleProduct?.images[0] ?? ''}
 									height={360}
 									width={400}
 									alt="Product"
@@ -195,10 +195,10 @@ export default function Dashboard() {
 								<Text fw={500}>{dataSingleProduct?.title}</Text>
 								<Badge>
 									<NumberFormatter
-									prefix="$"
-									thousandSeparator
-									className="text-base !font-normal"
-									value={dataSingleProduct?.price}
+										prefix="$"
+										thousandSeparator
+										className="text-base !font-normal"
+										value={dataSingleProduct?.price}
 									/>
 								</Badge>
 							</Group>

@@ -25,9 +25,9 @@ const formatCurrency = (num: number, c = 2, d = ".", t = ","): string => {
 		i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) +
 		(c
 			? d +
-			  Math.abs(n - parseInt(i))
-					.toFixed(c)
-					.slice(2)
+			Math.abs(n - parseInt(i))
+				.toFixed(c)
+				.slice(2)
 			: "")
 	);
 };

@@ -44,9 +44,9 @@ body {
 	height: 6px;
 }
 .scroll-awesome::-webkit-scrollbar-track {
-	background: #666; 
-  }
-  .scroll-awesome::-webkit-scrollbar-thumb {
+	background: #666;
+}
+.scroll-awesome::-webkit-scrollbar-thumb {
 	background: #ccc;
 	border-radius: 5px;
-  }
+}

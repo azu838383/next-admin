@@ -12,17 +12,17 @@ export interface IProduct {
 }
 
 export interface IProductItems {
-    id: number,
-    title: string,
-    description: string,
-    price: number,
-    discountPercentage: number,
-    rating: number,
-    stock: number,
-    brand: string,
-    category: string,
-    thumbnail: string,
-    images: string[]
+	id: number,
+	title: string,
+	description: string,
+	price: number,
+	discountPercentage: number,
+	rating: number,
+	stock: number,
+	brand: string,
+	category: string,
+	thumbnail: string,
+	images: string[]
 }
 
 
@@ -34,24 +34,24 @@ interface IProductItemsResult {
 }
 
 export interface IProductDummy {
-    limit: number,
-    products: IProductItems[],
-    skip: number,
-    total: number,
+	limit: number,
+	products: IProductItems[],
+	skip: number,
+	total: number,
 }
 
 export interface IProductsDummy {
-    limit: number,
-    products: IProductItems[],
-    skip: number,
-    total: number,
+	limit: number,
+	products: IProductItems[],
+	skip: number,
+	total: number,
 }
 
 export interface ISProductDummy {
-    limit: number,
-    products: IProductItems[],
-    skip: number,
-    total: number,
+	limit: number,
+	products: IProductItems[],
+	skip: number,
+	total: number,
 }
 
 interface IProductDummyResult {
@@ -93,7 +93,7 @@ export const GetProduct = (shouldFetch: boolean): IProductDummyResult => {
 	};
 };
 
-export const GetProductWPagination = (shouldFetch: boolean, limit:number, skip: number): IProductDummyResult => {
+export const GetProductWPagination = (shouldFetch: boolean, limit: number, skip: number): IProductDummyResult => {
 	const apiProps: API_PROPS = {
 		url: `${ENDPOINT_PRODUCT}?limit=${limit}&skip=${skip}`,
 		method: "GET",

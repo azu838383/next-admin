@@ -13,12 +13,12 @@ interface PropCard {
 	containerClassName?: string;
 	variant?: QRvariant;
 	variantButton?:
-		| "filled"
-		| "light"
-		| "outline"
-		| "subtle"
-		| "transparent"
-		| "white";
+	| "filled"
+	| "light"
+	| "outline"
+	| "subtle"
+	| "transparent"
+	| "white";
 	classButtonSave?: string;
 }
 

@@ -66,9 +66,8 @@ const TopNavbar = ({
 		<>
 			<div className="relative select-none shadow-inner">
 				<div
-					className={`fixed z-10 right-0 flex justify-between items-center px-4 h-[60px] max-h-[60px] bg-slate-900 transition-all duration-300 ${
-						opened ? "w-[calc(100%-250px)]" : "w-full"
-					}`}
+					className={`fixed z-10 right-0 flex justify-between items-center px-4 h-[60px] max-h-[60px] bg-slate-900 transition-all duration-300 ${opened ? "w-[calc(100%-250px)]" : "w-full"
+						}`}
 				>
 					<div className="flex items-center">
 						<Burger
@@ -85,9 +84,8 @@ const TopNavbar = ({
 					</div>
 					<Link
 						href={"#"}
-						className={`absolute left-0 right-0 w-fit mx-auto transition-all ${
-							opened ? "opacity-0" : "opacity-100"
-						}`}
+						className={`absolute left-0 right-0 w-fit mx-auto transition-all ${opened ? "opacity-0" : "opacity-100"
+							}`}
 					>
 						<Image
 							src={"/img/logo/sgg-logo-yellow.png"}

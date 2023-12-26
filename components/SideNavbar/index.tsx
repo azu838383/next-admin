@@ -65,9 +65,8 @@ export function SideNavbar({ opened }: { opened: boolean }) {
 
 	return (
 		<div
-			className={`h-screen fixed z-20 bg-slate-900 text-white transition-all duration-300 overflow-hidden ${
-				opened ? "w-[250px] opacity-1" : "opacity-0 w-[0]"
-			}`}
+			className={`h-screen fixed z-20 bg-slate-900 text-white transition-all duration-300 overflow-hidden ${opened ? "w-[250px] opacity-1" : "opacity-0 w-[0]"
+				}`}
 		>
 			<nav className={`w-[250px] drop-shadow-md ${classes.navbar}`}>
 				<div className={classes.header}>

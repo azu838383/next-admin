@@ -1,11 +1,11 @@
 {
-  "name": "Next Admin Panel",
-  "version": "1.0.0",
-  "favicon": "/img/favicon.ico",
-  "icon": "/img/logo.png",
-  "copyright": {
-    "year": "2023",
-    "owner": "@ad_adry",
-    "siteUrl": "https://adrisyahrul.github.io"
-  }
+	"name": "Next Admin Panel",
+	"version": "1.0.0",
+	"favicon": "/img/favicon.ico",
+	"icon": "/img/logo.png",
+	"copyright": {
+		"year": "2023",
+		"owner": "@ad_adry",
+		"siteUrl": "https://adrisyahrul.github.io"
+	}
 }

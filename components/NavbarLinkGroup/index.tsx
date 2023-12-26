@@ -135,7 +135,7 @@ export function LinksGroup({
 								height: rem(16),
 								transform:
 									Array.isArray(dropDownSideBar) &&
-									dropDownSideBar.includes(label)
+										dropDownSideBar.includes(label)
 										? "rotate(-90deg)"
 										: "none",
 							}}
