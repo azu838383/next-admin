@@ -24,7 +24,7 @@ export default function Dashboard() {
 	const { dataSProduct, isErrorSProduct, isLoadingSProduct, mutateSProduct } = SearchProduct(true, searchValue)
 	const { dataSingleProduct, isErrorSingleProduct, isLoadingSingleProduct, mutateSingleProduct } = GetSingleProduct(detailVisible, productId)
 
-	const totalPage = Math.ceil(Number(dataProduct?.total ?? 0) / limit)
+	const totalPage = Math.ceil(dataProduct ? Number(dataProduct?.total) / limit : 20)
 	const cardsArray = new Array(limit).fill(null)
 	useEffect(() => {
 		setSkip((page - 1) * limit)
@@ -121,7 +121,7 @@ export default function Dashboard() {
 					</div>
 					<div className="flex justify-between">
 						<div className="block min-w-10 min-h-full">
-							<Pagination value={page} onChange={setPage} total={totalPage} />
+							<Pagination value={page} onChange={setPage} total={totalPage??10} />
 						</div>
 						<div className="">
 							<Select
