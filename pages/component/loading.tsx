@@ -93,7 +93,7 @@ export default function LoadingPage() {
 						</div>
 					</CardLayout>
 					<CardLayout className="text-center flex flex-col gap-4 items-center">
-						Are you looser?
+						Are you gay?
 						<div className="flex gap-4 relative ">
 							<Button
 							className={`absolute transition-all !w-20 ${
