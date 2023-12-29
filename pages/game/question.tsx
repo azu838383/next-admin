@@ -6,7 +6,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 import appConfig from "../../app.json";
 
-export default function LoadingPage() {
+export default function Question() {
     const {
         addNotification,
         handleError,

@@ -1,6 +1,7 @@
 import { Image, Menu, ScrollArea, UnstyledButton, rem } from "@mantine/core";
 import {
 	IconComponents,
+	IconDeviceGamepad,
 	IconGauge,
 	IconLogout,
 	IconNotes,
@@ -47,10 +48,24 @@ export const listMenu = [
 				link: "/component/loading",
 				desc: "Component Notification & Loading can be use on all of action what you do",
 			},
+		],
+	},
+	{
+		label: "Little Game",
+		icon: IconDeviceGamepad,
+		initiallyOpened: true,
+		new: true,
+		desc: "All of game will be here",
+		links: [
 			{
-				label: "Little Game",
-				link: "/component/game",
+				label: "Answer the Question",
+				link: "/game/question",
 				desc: "This game will make your stress level up 🤣",
+			},
+			{
+				label: "Scramble words",
+				link: "/game/scramble",
+				desc: "This game will decrease your stress 😊",
 			},
 		],
 	},
