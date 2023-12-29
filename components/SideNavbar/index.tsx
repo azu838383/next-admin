@@ -47,6 +47,11 @@ export const listMenu = [
 				link: "/component/loading",
 				desc: "Component Notification & Loading can be use on all of action what you do",
 			},
+			{
+				label: "Little Game",
+				link: "/component/game",
+				desc: "This game will make your stress level up 🤣",
+			},
 		],
 	},
 	{

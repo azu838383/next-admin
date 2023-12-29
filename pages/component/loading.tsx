@@ -24,7 +24,8 @@ export default function LoadingPage() {
 	};
 
 	const [isHover, setIsHover] = useState<number[]>([1])
-
+	const [isCheat, setIsCheat] = useState(false)
+	
 	return (
 		<>
 			<Head>
@@ -91,60 +92,6 @@ export default function LoadingPage() {
 								Error Catching, can be use on trycatch function
 							</Button>
 						</div>
-					</CardLayout>
-					<CardLayout className="text-center flex flex-col gap-4 items-center">
-						Are you gay?
-						<div className="flex gap-4 relative ">
-							<Button
-							className={`absolute transition-all !w-20 ${
-								isHover.includes(1)?"-left-0 top-0":
-								isHover.includes(2)?"left-0 top-14":
-								isHover.includes(3)?"left-24 top-14":
-								isHover.includes(4)?"left-24 top-0":
-								""
-							}`}
-							onClick={()=>{
-								addNotification({
-									position: "top-right",
-									message: "Yes I know 🤣",
-									type: "success",
-								});
-							}}
-							>
-								Yes
-							</Button>
-							<Button
-							color={"red"}
-							className={`absolute transition-all !w-20 ${
-								isHover.includes(1)?"left-0 top-0":
-								isHover.includes(2)?"-left-24 top-0":
-								isHover.includes(3)?"-left-24 top-14":
-								isHover.includes(4)?"left-0 top-14":
-								""
-							}`}
-							onClick={()=>{
-								addNotification({
-									position: "top-right",
-									message: "You shouldn't be able to click on this 🤣",
-									type: "error",
-								});
-							}}
-							onMouseEnter={()=>{
-								if(isHover.includes(1)){
-									setIsHover([2])
-								} else if(isHover.includes(2)) {
-									setIsHover([3])
-								} else if(isHover.includes(3)) {
-									setIsHover([4])
-								} else {
-									setIsHover([1])
-								}
-							}}
-							>
-								No
-							</Button>
-						</div>
-						
 					</CardLayout>
 				</div>
 			</Layout>
