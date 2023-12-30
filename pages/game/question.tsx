@@ -9,17 +9,7 @@ import appConfig from "../../app.json";
 export default function Question() {
     const {
         addNotification,
-        handleError,
-        showLoadingSpinner,
-        hideLoadingSpinner,
     }: any = useLoading();
-
-    const handleLoading = (): void => {
-        showLoadingSpinner();
-        setTimeout(() => {
-            hideLoadingSpinner();
-        }, 3000);
-    };
 
     const [isHover, setIsHover] = useState<number[]>([1])
     const [isCheat, setIsCheat] = useState(false)
@@ -32,7 +22,8 @@ export default function Question() {
             <Layout>
                 <div className="grid grid-cols-2 gap-4">
                     <CardLayout className="text-center flex flex-col gap-4 items-center h-44">
-                        Are you gay?
+                        <>
+                        Are you noob?
                         <div className="flex gap-4 relative ">
                             <Button
                                 className={`absolute transition-all !w-20 ${isHover.includes(1) ? "-left-0 top-0" :
@@ -85,6 +76,7 @@ export default function Question() {
                                 No
                             </Button>
                         </div>
+                        </>
 
                     </CardLayout>
                 </div>
