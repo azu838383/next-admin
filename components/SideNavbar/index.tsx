@@ -58,11 +58,6 @@ export const listMenu = [
 		desc: "All of game will be here",
 		links: [
 			{
-				label: "Answer the Question",
-				link: "/game/question",
-				desc: "This game will make your stress level up 🤣",
-			},
-			{
 				label: "Scramble words",
 				link: "/game/scramble",
 				desc: "This game will decrease your stress 😊",

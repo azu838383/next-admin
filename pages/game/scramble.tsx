@@ -5,33 +5,39 @@ import Head from "next/head";
 import appConfig from "../../app.json";
 import { Button, Group, Stepper, Text, TextInput, Title, Tooltip } from "@mantine/core";
 import { RegexString } from "@/libs/constants";
-import { IconCheck, IconCross, IconInfoCircle } from "@tabler/icons-react";
 import { useLoading } from "@/components/Loading";
 import { MdCheck, MdClose } from "react-icons/md";
+import { GetWordBank } from "@/libs/api/wordBank";
 
 export default function Scramble() {
 
     const [step, setStep] = useState(0);
     const prevStep = () => setStep((current) => (current > 0 ? current - 1 : current));
 
-    const originalString = [
-        "elephant", "strawberry", "computer", "notebook", "giraffe", "sandwich",
-        "cucumber", "keyboard", "backpack", "television", "headphone", "mountain",
-        "waterfall", "landscape", "telephone", "beautiful", "restaurant", "triangle",
-        "pineapple", "celebrate", "adventure", "challenge", "direction", "knowledge",
-        "community", "celebrity", "important", "generation", "experience", "secretary",
-        "preference", "investment", "university", "background", "understand", "lifestyle",
-        "continuous", "technology", "enthusiastic", "combination", "performance", "atmosphere",
-        "creativity", "decoration", "preparation", "imagination", "responsible", "individual",
-        "motivation", "celebration", "opportunity", "competition", "development", "experience",
-        "revolution", "atmosphere", "comfortable", "information", "advertising", "examination",
-        "interesting", "environment", "complicated", "relationship", "traditional", "leadership",
-        "communication", "application", "professional", "architecture", "relationship", "organization",
-        "relationship", "communication", "interaction", "imagination", "respectable", "residential",
-        "transaction", "complication", "understanding", "international", "complication", "organization",
-        "entertainment", "conversation", "communication", "organization", "relationship", "transaction",
-        "relationship", "transaction", "environment", "communication", "relationship", "environment",
-    ];
+    const {dataWord} = GetWordBank(true)
+
+    const originalString = useMemo(() => {
+        return dataWord?.map((e)=> e.text_quiz)
+    }, [dataWord])
+
+    // const originalString = [
+    //     "elephant", "strawberry", "computer", "notebook", "giraffe", "sandwich",
+    //     "cucumber", "keyboard", "backpack", "television", "headphone", "mountain",
+    //     "waterfall", "landscape", "telephone", "beautiful", "restaurant", "triangle",
+    //     "pineapple", "celebrate", "adventure", "challenge", "direction", "knowledge",
+    //     "community", "celebrity", "important", "generation", "experience", "secretary",
+    //     "preference", "investment", "university", "background", "understand", "lifestyle",
+    //     "continuous", "technology", "enthusiastic", "combination", "performance", "atmosphere",
+    //     "creativity", "decoration", "preparation", "imagination", "responsible", "individual",
+    //     "motivation", "celebration", "opportunity", "competition", "development", "experience",
+    //     "revolution", "atmosphere", "comfortable", "information", "advertising", "examination",
+    //     "interesting", "environment", "complicated", "relationship", "traditional", "leadership",
+    //     "communication", "application", "professional", "architecture", "relationship", "organization",
+    //     "relationship", "communication", "interaction", "imagination", "respectable", "residential",
+    //     "transaction", "complication", "understanding", "international", "complication", "organization",
+    //     "entertainment", "conversation", "communication", "organization", "relationship", "transaction",
+    //     "relationship", "transaction", "environment", "communication", "relationship", "environment",
+    // ];
     const shuffleString = (str: string) => {
         let arr = str.split('');
         for (let i = arr.length - 1; i > 0; i--) {
@@ -41,15 +47,15 @@ export default function Scramble() {
         return arr.join(' ');
     }
 
-    const randomIndex = useMemo(() => Math.floor(Math.random() * originalString.length), []);
-    const randomIndex2 = useMemo(() => Math.floor(Math.random() * originalString.length), []);
-    const randomIndex3 = useMemo(() => Math.floor(Math.random() * originalString.length), []);
-    const randomString = originalString[randomIndex];
-    const randomString2 = originalString[randomIndex2];
-    const randomString3 = originalString[randomIndex3];
-    const shuffledString = useMemo(() => shuffleString(randomString), [randomString]);
-    const shuffledString2 = useMemo(() => shuffleString(randomString2), [randomString2]);
-    const shuffledString3 = useMemo(() => shuffleString(randomString3), [randomString3]);
+    const randomIndex = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
+    const randomIndex2 = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
+    const randomIndex3 = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
+    const randomString = originalString?originalString[randomIndex]:'';
+    const randomString2 = originalString?originalString[randomIndex2]:'';
+    const randomString3 = originalString?originalString[randomIndex3]:'';
+    const shuffledString = useMemo(() => shuffleString(randomString??'bos'), [randomString, dataWord]);
+    const shuffledString2 = useMemo(() => shuffleString(randomString2??'bos'), [randomString2, dataWord]);
+    const shuffledString3 = useMemo(() => shuffleString(randomString3??'bos'), [randomString3, dataWord]);
 
     interface IScrambleWords {
         name?: string
@@ -80,7 +86,7 @@ export default function Scramble() {
         if (stateQuiz) {
             const timer = setTimeout(() => {
                 setStateQuiz(false);
-            }, 50000);
+            }, 30000);
             return () => clearTimeout(timer);
         }
     }, [stateQuiz])
@@ -244,24 +250,23 @@ export default function Scramble() {
                                 )}
                                 <Button onClick={() => {
                                     setStep((current) => (current < 4 ? current + 1 : current))
-                                    shuffleString(randomString)
                                     if (step === 1) {
                                         setQuiz([
-                                            (resultScramble.quizOne).toLowerCase() === randomString.toLowerCase() ? 1 : 0,
+                                            (resultScramble.quizOne).toLowerCase() === randomString?.toLowerCase() ? 1 : 0,
                                             quiz[1],
                                             quiz[2]
                                         ]);
                                     } else if (step === 2) {
                                         setQuiz([
                                             quiz[0],
-                                            (resultScramble.quizTwo).toLowerCase() === randomString2.toLowerCase() ? 1 : 0,
+                                            (resultScramble.quizTwo).toLowerCase() === randomString2?.toLowerCase() ? 1 : 0,
                                             quiz[2]
                                         ]);
                                     } else if (step === 3) {
                                         setQuiz([
                                             quiz[0],
                                             quiz[1],
-                                            (resultScramble.quizThree).toLowerCase() === randomString3.toLowerCase() ? 1 : 0
+                                            (resultScramble.quizThree).toLowerCase() === randomString3?.toLowerCase() ? 1 : 0
                                         ]);
                                     }
                                 }}
