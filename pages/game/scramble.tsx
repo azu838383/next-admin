@@ -80,7 +80,7 @@ export default function Scramble() {
         if (stateQuiz) {
             const timer = setTimeout(() => {
                 setStateQuiz(false);
-            }, 30000);
+            }, 50000);
             return () => clearTimeout(timer);
         }
     }, [stateQuiz])
