@@ -4,31 +4,42 @@ import fetcherSWR, { API_PROPS } from ".";
 
 const ENDPOINT_WORD_BANK = "/word";
 
-export interface IWordBank {
-	text_quiz: string,
+export interface IRegisData {
+	name: string,
 }
 
-interface IWordBankResult {
-	dataWord?: IWordBank[];
-	isLoadingWord: boolean;
-	isErrorWord: any;
-	mutateWord: KeyedMutator<IWordBank[]>;
+export interface IScrambleWords {
+	name: string
+	resultOne: string
+	resultTwo: string
+	resultThree: string
 }
 
-export const GetWordBank = (shouldFetch: boolean): IWordBankResult => {
+export interface IResultScore {
+	name: string
+	trueAnswer: number
+	score: number
+}
+
+export interface IResultData {
+	status: boolean
+	data: IResultScore
+}
+
+export const RegisStart = async (datax: IRegisData): Promise<string[]> => {
 	const apiProps: API_PROPS = {
 		url: `${ENDPOINT_WORD_BANK}/bank`,
-		method: "GET",
+		method: "POST",
+		data: datax,
 	};
-	const { data, isLoading, error, mutate } = useSWR<IWordBank[]>(
-		shouldFetch ? apiProps : null,
-		fetcherSWR,
-		{}
-	);
-	return {
-		dataWord: data,
-		isErrorWord: error,
-		isLoadingWord: isLoading,
-		mutateWord: mutate,
+	return await fetcherSWR(apiProps);
+};
+
+export const SubmitResult = async (datax: IScrambleWords): Promise<any> => {
+	const apiProps: API_PROPS = {
+		url: `${ENDPOINT_WORD_BANK}/postResult`,
+		method: "POST",
+		data: datax,
 	};
+	return await fetcherSWR(apiProps);
 };

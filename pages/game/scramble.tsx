@@ -7,76 +7,59 @@ import { Button, Group, Stepper, Text, TextInput, Title, Tooltip } from "@mantin
 import { RegexString } from "@/libs/constants";
 import { useLoading } from "@/components/Loading";
 import { MdCheck, MdClose } from "react-icons/md";
-import { GetWordBank } from "@/libs/api/wordBank";
+import { IRegisData, IResultData, IScrambleWords, RegisStart, SubmitResult } from "@/libs/api/wordBank";
 
 export default function Scramble() {
+    const {
+		addNotification,
+		handleError,
+		showLoadingSpinner,
+		hideLoadingSpinner,
+	}: any = useLoading();
 
     const [step, setStep] = useState(0);
     const prevStep = () => setStep((current) => (current > 0 ? current - 1 : current));
 
-    const {dataWord} = GetWordBank(true)
+    const [registerState, setRegisterState] = useState<IRegisData>({name:''})
+    const [dataWordSufle, setDataWordSufle] = useState<string[]>([])
 
-    const originalString = useMemo(() => {
-        return dataWord?.map((e)=> e.text_quiz)
-    }, [dataWord])
-
-    // const originalString = [
-    //     "elephant", "strawberry", "computer", "notebook", "giraffe", "sandwich",
-    //     "cucumber", "keyboard", "backpack", "television", "headphone", "mountain",
-    //     "waterfall", "landscape", "telephone", "beautiful", "restaurant", "triangle",
-    //     "pineapple", "celebrate", "adventure", "challenge", "direction", "knowledge",
-    //     "community", "celebrity", "important", "generation", "experience", "secretary",
-    //     "preference", "investment", "university", "background", "understand", "lifestyle",
-    //     "continuous", "technology", "enthusiastic", "combination", "performance", "atmosphere",
-    //     "creativity", "decoration", "preparation", "imagination", "responsible", "individual",
-    //     "motivation", "celebration", "opportunity", "competition", "development", "experience",
-    //     "revolution", "atmosphere", "comfortable", "information", "advertising", "examination",
-    //     "interesting", "environment", "complicated", "relationship", "traditional", "leadership",
-    //     "communication", "application", "professional", "architecture", "relationship", "organization",
-    //     "relationship", "communication", "interaction", "imagination", "respectable", "residential",
-    //     "transaction", "complication", "understanding", "international", "complication", "organization",
-    //     "entertainment", "conversation", "communication", "organization", "relationship", "transaction",
-    //     "relationship", "transaction", "environment", "communication", "relationship", "environment",
-    // ];
-    const shuffleString = (str: string) => {
-        let arr = str.split('');
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    const handleSubmitName = async (): Promise<any> => {
+        try {
+            showLoadingSpinner()
+            const data = await RegisStart(registerState)
+            setDataWordSufle(data)
+            setStep((current) => (current < 4 ? current + 1 : current))
+        } catch (error) {
+            handleError(error)
+        } finally {
+            hideLoadingSpinner()
         }
-        return arr.join(' ');
     }
 
-    const randomIndex = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
-    const randomIndex2 = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
-    const randomIndex3 = useMemo(() => Math.floor(Math.random() * Number(originalString?.length)), [dataWord]);
-    const randomString = originalString?originalString[randomIndex]:'';
-    const randomString2 = originalString?originalString[randomIndex2]:'';
-    const randomString3 = originalString?originalString[randomIndex3]:'';
-    const shuffledString = useMemo(() => shuffleString(randomString??'bos'), [randomString, dataWord]);
-    const shuffledString2 = useMemo(() => shuffleString(randomString2??'bos'), [randomString2, dataWord]);
-    const shuffledString3 = useMemo(() => shuffleString(randomString3??'bos'), [randomString3, dataWord]);
-
-    interface IScrambleWords {
-        name?: string
-        quizOne: string
-        quizTwo: string
-        quizThree: string
-        score?: number
-    }
     const initiateQuiz: IScrambleWords = {
         name: '',
-        quizOne: '',
-        quizTwo: '',
-        quizThree: '',
-        score: 0
+        resultOne: '',
+        resultTwo: '',
+        resultThree: '',
     }
     const [resultScramble, setResultScramble] = useState<IScrambleWords>(initiateQuiz)
-    const [quiz, setQuiz] = useState<number[]>([])
+    const [dataResult, setDataResult] = useState<IResultData|undefined>(undefined)
 
-    const {
-        addNotification,
-    }: any = useLoading();
+    const handleSubmitResult = async (): Promise<any> => {
+        try {
+            showLoadingSpinner()
+            const data = await SubmitResult(resultScramble)
+            setDataResult(data)
+            setStep((current) => (current < 4 ? current + 1 : current))
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+            
+            handleError(error)
+        } finally {
+            hideLoadingSpinner()
+        }
+    }
 
     const [isHover, setIsHover] = useState<number[]>([1])
     const [isCheat, setIsCheat] = useState(false)
@@ -86,7 +69,7 @@ export default function Scramble() {
         if (stateQuiz) {
             const timer = setTimeout(() => {
                 setStateQuiz(false);
-            }, 30000);
+            }, 60000);
             return () => clearTimeout(timer);
         }
     }, [stateQuiz])
@@ -126,9 +109,10 @@ export default function Scramble() {
                     {step === 0 ? (
                         <TextInput
                             placeholder="Input your name here"
-                            value={resultScramble.name}
+                            value={registerState.name}
                             onChange={(e) => {
                                 if (RegexString.test(e.target.value)) {
+                                    setRegisterState({...registerState, name: e.target.value})
                                     setResultScramble({ ...resultScramble, name: e.target.value })
                                 } else if (e.target.value === '') {
                                     setResultScramble({ ...resultScramble, name: e.target.value })
@@ -137,45 +121,34 @@ export default function Scramble() {
                         />
                     ) : step > 3 ? (
                         <div className="">
-                            <Text size="xl">{resultScramble.name}</Text>
-                            <Text size="xl" className="font-semibold">Your score is: {((100 / 3) * quiz.filter((f) => f === 1).length).toFixed(0)}!</Text>
-                            <Text size="sm">Correct answer {quiz.filter((f) => f === 1).length} of 3 Quiz</Text>
-                            <div className="flex flex-col">
-                                <div className={`flex justify-center items-center`}>
-                                {resultScramble.quizOne} {quiz[0]===1?<MdCheck />:<MdClose />}
-                                </div>
-                                <div className={`flex justify-center items-center`}>
-                                {resultScramble.quizTwo} {quiz[1]===1?<MdCheck />:<MdClose />}
-                                </div>
-                                <div className={`flex justify-center items-center`}>
-                                {resultScramble.quizThree} {quiz[2]===1?<MdCheck />:<MdClose />}
-                                </div>
-                            </div>
+                            <Text size="xl">{dataResult?.data.name}</Text>
+                            <Text size="xl" className="font-semibold">Your score is: {dataResult?.data.score}!</Text>
+                            <Text size="sm">Correct answer {dataResult?.data.trueAnswer} of 3 Quiz</Text>
                         </div>
                     ) : (
                         stateQuiz ? (
                             <>
-                                <Title size={36} className="uppercase">{step === 1 ? shuffledString : step === 2 ? shuffledString2 : shuffledString3}</Title>
+                                <Title size={36} className="uppercase">{step === 1? dataWordSufle[0] : step === 2 ? dataWordSufle[1] : dataWordSufle[2]}</Title>
                                 <Text>Please correct word above!</Text>
                                 <TextInput
                                     placeholder="Type your answer here"
-                                    value={step === 1 ? resultScramble.quizOne : step === 2 ? resultScramble.quizTwo : resultScramble.quizThree}
+                                    value={step === 1 ? resultScramble.resultOne : step === 2 ? resultScramble.resultTwo : resultScramble.resultThree}
                                     onChange={(e) => {
                                         if (RegexString.test(e.target.value)) {
                                             if (step === 1) {
-                                                setResultScramble({ ...resultScramble, quizOne: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultOne: e.target.value })
                                             } else if (step === 2) {
-                                                setResultScramble({ ...resultScramble, quizTwo: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultTwo: e.target.value })
                                             } else {
-                                                setResultScramble({ ...resultScramble, quizThree: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultThree: e.target.value })
                                             }
                                         } else if (e.target.value === '') {
                                             if (step === 1) {
-                                                setResultScramble({ ...resultScramble, quizOne: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultOne: e.target.value })
                                             } else if (step === 2) {
-                                                setResultScramble({ ...resultScramble, quizTwo: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultTwo: e.target.value })
                                             } else {
-                                                setResultScramble({ ...resultScramble, quizThree: e.target.value })
+                                                setResultScramble({ ...resultScramble, resultThree: e.target.value })
                                             }
                                         }
                                     }}
@@ -245,32 +218,20 @@ export default function Scramble() {
                     <Group justify="center">
                         {step < 4 && (
                             <>
-                                {step > 0 && (
+                                {step > 1 && (
                                     <Button variant="default" onClick={prevStep}>Back</Button>
                                 )}
                                 <Button onClick={() => {
-                                    setStep((current) => (current < 4 ? current + 1 : current))
-                                    if (step === 1) {
-                                        setQuiz([
-                                            (resultScramble.quizOne).toLowerCase() === randomString?.toLowerCase() ? 1 : 0,
-                                            quiz[1],
-                                            quiz[2]
-                                        ]);
-                                    } else if (step === 2) {
-                                        setQuiz([
-                                            quiz[0],
-                                            (resultScramble.quizTwo).toLowerCase() === randomString2?.toLowerCase() ? 1 : 0,
-                                            quiz[2]
-                                        ]);
+                                    if (step === 0) {
+                                        handleSubmitName()
+                                    } else if (step >= 1 && step <= 2) {
+                                        setStep((current) => (current < 4 ? current + 1 : current))
                                     } else if (step === 3) {
-                                        setQuiz([
-                                            quiz[0],
-                                            quiz[1],
-                                            (resultScramble.quizThree).toLowerCase() === randomString3?.toLowerCase() ? 1 : 0
-                                        ]);
+                                        handleSubmitResult()
                                     }
+                                    
                                 }}
-                                    disabled={step === 1 ? resultScramble.quizOne.length < 1 : step === 2 ? resultScramble.quizTwo.length < 1 : step === 3 ? resultScramble.quizThree.length < 1 : Number(resultScramble.name?.length) < 1}
+                                    disabled={step === 1 ? resultScramble.resultOne.length < 1 : step === 2 ? resultScramble.resultTwo.length < 1 : step === 3 ? resultScramble.resultThree.length < 1 : Number(resultScramble.name?.length) < 1}
                                 >Next step</Button>
                             </>
                         )}

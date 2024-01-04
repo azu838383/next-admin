@@ -1,6 +1,6 @@
 import { LIST_LANGUAGE } from "./language";
 // const API_URL = "https://dummyjson.com";
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = "http://192.168.131.4:8000/api";
 
 export { API_URL, LIST_LANGUAGE };
 

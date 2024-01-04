@@ -87,8 +87,8 @@ const useBaseLoading = (): any => {
 
 		let errorMessage = "An error occurred. Please try again later.";
 		if (error.response) {
-			if (error.response.status === 403) {
-				errorMessage = "You are not authorized to perform this action.";
+			if (error.response.status === 400) {
+				errorMessage = "Username has been taken!";
 			} else if (error.response.data) {
 				errorMessage = error.response.data;
 			}

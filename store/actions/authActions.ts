@@ -11,7 +11,6 @@ import { RootState } from '../reducers'
 
 export const login = (data: any) => async (dispatch: ThunkDispatch<RootState, object, AnyAction>) => {
 	const response = await api.post(`${API_URL}/api/login`, data)
-	const whiteListReg = ['en', 'id', 'vi', 'br', 'kr']
 	const token = get(response, 'data')
 	if (data.AuthType === 'frontend') {
 		const userPayload = decodeJwtFE(token)
@@ -25,7 +24,6 @@ export const login = (data: any) => async (dispatch: ThunkDispatch<RootState, ob
 			type: USER.UPDATE_CURRENT_USER,
 			payload: userPayload,
 		})
-		// i18n.changeLanguage(userPayload?.region??'en')
 	}
 }
 
